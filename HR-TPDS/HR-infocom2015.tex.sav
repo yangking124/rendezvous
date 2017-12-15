@@ -1,0 +1,287 @@
+%\documentclass[conference]{IEEEtran}
+\documentclass[10pt, conference, letterpaper]{IEEEtran}
+%% INFOCOM 2013 addition:
+\makeatletter
+\def\ps@headings{%
+\def\@oddhead{\mbox{}\scriptsize\rightmark \hfil \thepage}%
+\def\@evenhead{\scriptsize\thepage \hfil \leftmark\mbox{}}%
+\def\@oddfoot{}%
+\def\@evenfoot{}}
+\makeatother
+\pagestyle{headings}
+
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{cite}
+%\usepackage{mathrsfs}
+\usepackage[bookmarks=false]{hyperref}
+\usepackage{array}
+\usepackage{cases}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{threeparttable}
+
+%
+%\begin{flushleft}\fontsize{8.5pt}{0.6\baselineskip}\selectfont{Remarks: 1) ``$-$" means the algorithm is not applicable to
+%oblivious blind rendezvous; 2) ETTR means expected time to rendezvous (note: MMC cannot guarantee rendezvous in bounded time); 3) $P$ is the smallest prime number larger than $N$, $P=O(N)$. 4) $k_a$ and $k_b$ denote the numbers of two users' available channels; 5) SCH in this paper is only suitable for synchronous users.
+%}\end{flushleft}
+
+
+\newtheorem{property}{Property}[section]
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{claim}[lemma]{Claim}
+\newtheorem{remark}{Remark}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}
+\newtheorem{problem}{Problem}
+
+\ifCLASSINFOpdf
+
+\else
+
+\fi
+
+\ifCLASSOPTIONcompsoc
+\usepackage[tight,normalsize,sf,SF]{subfigure}
+\else
+\usepackage[tight,footnotesize]{subfigure}
+\fi
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+
+
+\bibliographystyle{plain}
+
+\title{Minimum set of control nodes to fully control dynamic networks}
+
+%\author{\IEEEauthorblockN{
+%Zhaoquan Gu\IEEEauthorrefmark{1}, Haosen Pu\IEEEauthorrefmark{1}, Qiang-Sheng Hua\IEEEauthorrefmark{2}, and
+%Francis C.M. Lau\IEEEauthorrefmark{3}}
+%
+%\IEEEauthorblockA{\IEEEauthorrefmark{1}Institute for Interdisciplinary Information Sciences, Tsinghua University,
+%Beijing, China\\}
+%\IEEEauthorblockA{\IEEEauthorrefmark{2}School of Computer Science $\&$ Technology, Huazhong University of Science and Technology, China\\}
+%\IEEEauthorblockA{\IEEEauthorrefmark{3}Department of Computer Science, The University of Hong Kong, Hong Kong, China\\}
+%}
+
+\maketitle
+
+
+\begin{abstract}
+Network controlling is a problem of great importance, for its wide range of applications.Although lots of work have been devoted to gain insight into this problem, there still lacks a work to study the minimum set of control nodes to
+fully control an arbitrary network, given its transmission matrix. Therefore, we
+initiate the study of minimum set of control nodes of dynamic networks. First of all,
+we give the formulation of the problem of the minimum set of control nodes (MSC) for
+finding a minimum set of control nodes to fully control an arbitrary network. We show that the MSC problem is NP-hard. Then, we propose an exponential algorithm which can
+find the minimum set of control nodes and an $O(n^3)$ approximation algorithm of MSC problem. We also propose an algorithm to construct a controlling matrix of a network and another algorithm to construct a controlling matrix using a given set of control nodes. We show that the minimum number of controllers and control nodes can be achieved at the same time as well. Extensive simulations have been conducted to corroborate our analysis.
+\end{abstract}
+
+
+\begin{IEEEkeywords}
+Control nodes, Network control, Fully control, Controlling matrix
+\end{IEEEkeywords}
+
+\section{Introduction}
+There are many networks both in the real world, such
+as food web, transportation networks, communication networks and gene networks.
+Network controlling involves both network science and control theory.
+
+There are linear networks and nonlinear networks in the real world. Controlling nonlinear
+networks is more complicated than controlling linear networks. But they have similarities in many aspects.
+So studying linear network controlling can help us gain some insight into nonlinear network controlling.
+In this paper, we focus on linear network controlling.
+
+We use the classic linear, time-invariant model to describe the process of dynamic networks:
+\begin{equation}
+\overrightarrow {x(t+1)} = A \cdot \overrightarrow {x(t)} + B \cdot \overrightarrow {u(t)}
+\end{equation}
+where $\overrightarrow {x(t)}$ represents the state values of all the \emph{N} nodes in the network, while $\overrightarrow {u(t)} $ represents all the input signals of \emph{M}
+controllers. A is a $N \times N $ transmission matrix whose elements indicate the weight of links between two nodes. B is a $N \times M $
+controlling matrix, which indicates the weight of each link from a controller to a control node. The elements in matrix A and B is fixed during the process under the assumption of linear, time-invariant model.
+
+In control theory, we say a system is controllable if given a final state, we can use input signals to drive the system to it in finite time. Control theory gives us some conditions to judge whether a linear, invariant system $ (A,B) $ is controllable or not, such as Gram matrix condition, Kalman rank condition and PBH rank condition. In this paper, we mainly use the PBH rank condition to get some results.
+The PBH rank condition tells us that if a linear, invariant system $ (A,B) $ is controllable, then
+\begin{equation}
+rank(cI_N - A, B) = N
+\end{equation}
+holds for any complex number c. Here, $ I_N$ is a $N \times N $ identity matrix. It has a equivalent form as below :
+A linear, invariant system $ (A,B) $ is controllable, then
+\begin{equation}
+rank(\lambda I_N - A, B) = N
+\end{equation}
+holds for every eigenvalue of matrix A.
+
+In the recent years, some theories about network controllability have been proposed, such as structural controllability theory and exact controllability theory. Structural controllability theory was proposed by Liu \emph{et al}. It introduces the concept of structural controllability and gives a method to find a minimum set of driver nodes, employing maximum matching algorithm. Exact controllability was
+proposed by Yuan \emph{et al}. This theory is based on the PBH rank condition. It gives the minimum number $ N_D $ of controllers to fully control an arbitrary network :
+\begin{equation}
+N_D = \max_i {\mu(\lambda_i)}
+\end{equation}
+where $\lambda_i (i ranges from 1 to l)$ is the i-th eigenvalue of A and $\delta(\lambda_i)$ is the geometric multiplicity of eigenvalue $\lambda_i$, defined as:
+\begin{equation}
+\mu(\lambda_i) = dimV_{\lambda_i} = N - rank(\lambda_iI_N-A).
+\end{equation}
+
+Although many researchers have devoted great effort to explore the nature of network controllability, to our best knowledge, there still lacks any work considering the minimum number of control nodes needed to fully control an arbitrary network. This problem is of great importance in some scenarios. Imagine that there is a social network, and we need to lead the direction of public opinion on a particular topic. It's very straightforward that we need to influence some people in the social network first, then they will change the opinion of the people related to them, an so on. For simplicity, the fewer people we need to directly influence, the better.
+
+In this paper, we propose the problem of the minimum set of control nodes (MSC), which is to design a controlling pattern to fully control an arbitrary network. The main challenge of the problem is to minimize the number of control nodes. We also study the relationship between the minimum number of driver nodes ($N_D$) and the minimum number of control nodes ($N_C$) and propose a method to design a controlling matrix for an arbitrary network to be fully controlled with the minimum number of driver nodes and control nodes at the same time.
+
+The main contributions of this paper are:
+\begin{itemize}
+\item[1)] We formulate the problem of the minimum set of control nodes (MSC) and prove that it is an NP-hard problem;
+\item[2)] We propose an exponential algorithm to find a set of control nodes to fully control a network, whose size is exactly the minimum number of control nodes;
+\item[3)] We propose an $O(n^3)$ approximation algorithm of MSC problem;
+\item[4)] We propose a method to design a controlling matrix which uses the minimum number of controllers for an arbitrary network;
+\item[5)] We prove that the minimum number of driver nodes ($N_D$) and the minimum number of control nodes ($N_C$) can be satisfied at the same time and propose a method to design a controlling matrix which satisfies $N_D$ and $N_C$ simultaneously;
+\end{itemize}
+
+The remainder of this paper is organized as follows. In the following section, we give the system model and the formulation of MSC problem. Section \uppercase\expandafter{\romannumeral3} highlights some related works on the MSC problem.
+In Section \uppercase\expandafter{\romannumeral4}, we explore the relationship between $N_D$ and $N_C$. We prove the NP-hardness of the MSC problem in Section \uppercase\expandafter{\romannumeral5} and propose an exponential algorithm that can get the optimal solution and an $O(n^3)$ approximation algorithm of MSC problem. Besides, in Section \uppercase\expandafter{\romannumeral6}we introduce an universally applicable method to design the controlling matrix of an arbitrary network using $N_D$ controllers and another method to design a controlling matrix using $N_D$ controllers and $N_C$ control nodes as well. Extensive simulations have been conducted by us and Section \uppercase\expandafter{\romannumeral7} gives the results and analyses. Section \uppercase\expandafter{\romannumeral8} concludes the paper.
+
+\section{Preliminaries}
+\label{sectionPreliminaries}
+\subsection{System Model}
+
+We take a dynamic directed network $G(A)$ into consideration. Suppose that there are $N$ nodes $V={v_1,v_2,\cdots,v_N}$ in $G(A)$. In the linear, time-invariant model, $\overrightarrow {x(t)}$ represents the state values of all the \emph{N} nodes in the network at time t. Matrix $A$ is called the transmission matrix of network $G(A)$. $A$ is a $N \times N $ matrix. If the element $a_{ij}$ of $A$ is nonzero, then there must exist a directed link from vertex $v_j$ to vertex $v_i$, and the value of $a_{ij}$ is the weight of the directed link. For
+undirected networks, if $a_{ij}$ is zero, then $a_{ji}$ must be zero as well. If $a_{ij}$ is nonzero, then $a_{ji}$ is nonzero and $a_{ji} = a_{ij}$.
+
+This paper is mainly focused on controlling the dynamic network $G(A)$ by employing a set of control nodes. We need to design a controlling matrix $B$, which has $N$ rows. And the number of columns in $B$ indicates the number of controllers. $B$ gives us the information of the connection from the controllers to the control nodes.
+Every nonzero row is related to a control node in $G(A)$. The network $G(A,B)$ is called a controlled network. We can divide time into equal slots and control the network in a discrete way. We assume $G(A,B)$ fits the linear, time-invariant model well, and have the formulation as :
+\begin{equation*}
+\overrightarrow {x(t+1)} = A \cdot \overrightarrow {x(t)} + B \cdot \overrightarrow {u(t)}.
+\end{equation*}
+
+\subsection{Control Nodes}
+To explicitly explain our research result, we give the definition of controller and control node here.
+\begin{definition}
+\label{controller}
+A controller is a external node that can offer signals to change the state of nodes in the network.
+\end{definition}
+\begin{definition}
+\label{controlNode}
+A control node of a network is a node which is directly controlled by one controller or more.
+\end{definition}
+
+\subsection{Problem Formulation}
+In this paper, we want to find a minimum set of control nodes to fully control an arbitrary dynamic network. We constraint that the number of controllers that we use is minimum as well, and later we will prove that the number of controllers and control nodes can both be minimum at the same time in a network. Therefore, we formulate the problem of Minimum Set of Control nodes as follows:
+\begin{problem}
+For any dynamic network $G(A)$, find a controlling method B which uses the minimum number of controllers and control nodes at the same time.
+\end{problem}
+
+\section{Related Works}
+\label{sectionRelatedWorks}
+\subsection{PBH rank condition}
+A linear, time-invariant network $G(A,B)$ is said to be \emph{controllable} if we can drive it from any start state to any final state that we desire in finite time by imposing external signals which is time-invariant. It is shown in \cite{Hautus1969Controllability} that $G(A,B)$ is controllable if and only if it satisfies the PBH rank condition that :
+\begin{equation*}
+rank(cI_N - A, B) = N
+\end{equation*}
+holds for any complex number c. Here, $ I_N$ is a $N \times N $ identity matrix. It has a equivalent form as below :
+A linear, invariant system $ (A,B) $ is controllable, then
+\begin{equation*}
+rank(\lambda I_N - A, B) = N
+\end{equation*}
+holds for every eigenvalue of matrix A.
+PBH rank condition is one of the conditions that control theory gives us, and it is very useful in the scenario of MSC problem.
+
+\subsection{Exact Controllability}
+Exact controllability theory was introduced by Yuan \emph {et al.} The exact controllability theory gives the minimum number $ N_D $ of controllers to fully control an arbitrary network :
+\begin{equation*}
+N_D = \max_i {\mu(\lambda_i)}
+\end{equation*}
+where $\lambda_i (i ranges from 1 to l)$ is the i-th eigenvalue of A and $\delta(\lambda_i)$ is the geometric multiplicity of eigenvalue $\lambda_i$, defined as:
+\begin{equation*}
+\mu(\lambda_i) = dimV_{\lambda_i} = N - rank(\lambda_iI_N-A).
+\end{equation*}
+In fact, the geometric multiplicity of eigenvalue $\lambda_i$ is the maximum number of independent eigenvectors belong to eigenvalue $\lambda_i$.
+
+And for undirected networks, the geometric multiplicity $\mu(\lambda_i)$ of eigenvalue $\lambda_i$ equals the algebraic multiplicity $\delta(\lambda_i)$ of eigenvalue $\lambda_i$, which is also the eigenvalue degeneracy. Therefore, for undirected networks,
+\begin{equation*}
+N_D = \max_i {\delta(\lambda_i)}
+\end{equation*}
+also holds.
+
+\subsection{Maximal set of independent vectors}
+In linear algebra, finding a maximal set of independent vectors of a matrix is a very important problem. This problem is of great importance in the MSC problem as well. Find a $M \times N $ matrix, there exists $M$ row vectors and $N$ column vectors. In linear algebra, it's been shown that the maximum number of independent row vectors and column vectors are equal, and they both equal to the rank of the matrix. One method to get a maximal set of independent row vectors is to perform elementary column transformations on the matrix. Then we will get a matrix of the column canonical form. In the column canonical form, every first nonzero element in a row indicates that in the unchanged matrix, this row vector is one row vector of the maximal set of independent row vectors.
+The following is an example of this process:
+
+\subsection{Vandermonde Matrix}
+Vandermonde matrix \cite{Klinger1967THE} is of great importance in control theory and information processing. A Vandermonde matrix is a square matrix. An $N \times N$ Vandermonde matrix has the form as:
+\begin{equation}
+V_N = {\left[ \begin{array}{c c c c c}
+1 & x_1 & x_1^2 & \cdots & x_1^{n-1}\\
+1 & x_2 & x_2^2 & \cdots & x_2^{n-1}\\
+\vdots & \vdots & \vdots & & \vdots\\
+1 & x_N & x_N^2 & \cdots & x_N^{n-1}
+\end{array}
+\right ]}
+\end{equation}
+The Vandermonde matrix has an important property that
+\begin{equation}
+det(V_N) = \prod_{1 \le j < j \le N}(x_i - x_j)
+\end{equation}
+If $x_i \ne x_j$ for any $i \ne j$, then $det(V_N) \ne 0$.
+This is very important in our later discuss.
+
+\section{Minimum Number of Control Nodes}
+In this section, we focus on the relationship between the minimum number of controllers or independent driver nodes $(N_D)$ and the minimum number of control nodes $(N_C)$.
+\subsection{Lower and Upper bounds of $N_C/N_D$}
+It is obvious that $N_C \ge N_D$, for that if there are less control nodes than controllers, for each control node, we can use a controller to control it to guarantee the controllability of the network. Then there are redundant controllers. Therefore, the number of controllers is not minimum, which is inconsistent with the assumption. Consider the following example:
+\begin{equation*}
+A = {\left[ \begin{array}{c c c c c}
+0 & 0 & 0 & \cdots & 0\\
+1 & 0 & 0 & \cdots & 0\\
+0 & 1 & 0 & \cdots & 0\\
+\vdots & \vdots & \vdots &  & \vdots\\
+0 & 0 & 0 & \cdots & 1
+\end{array}
+\right ]}
+\end{equation*}
+It is easy to compute that the matrix $A$ has a single eigenvalue $0$. And for eigenvalue $\lambda = 0$, $\lambda I_N - A = -A$. According to the exact controllability theory, $N_D = N - rank(-A) = N - (N - 1) = 1$. And $N_C = N_D = 1$.
+Therefore, the lower bound of $N_C/N_D$ is $1$.
+
+Then we consider the upper bound of $N_C/N_D$. It is straightforward that $N_D \ge 1$, because we need at least one controller to control a network. If $N_D$ is set to $1$, we consider how large $N_C$ could be.
+Suppose $N$ is even. Consider the following matrix A:
+\begin{equation*}
+A = {\left[ \begin{array}{c c c c c c c c}
+0 & 1 &  &  &  & & & \\
+1 & 0 &  &  &  & & & \\
+ &  &  0 & 2 &  & & & \\
+ &  &  2 & 0 &  & & & \\
+ &   &  &  &  & \ddots & & \\
+ &  &  &  & \ddots & & & \\
+  &  &  &  &  & &0 & N/2 \\
+ &  &  &  &  & & N/2 & 0
+\end{array}
+\right ]}
+\end{equation*}
+It is easy to compute that the eigenvalues of matrix A are: $\pm 1,\pm 2, \cdots, \pm N/2$, and $N_D = 1$. And to make the PBH condition satisfied for every eigenvalue, at least $N/2$ nodes need to be directly controlled. Therefore, $N_C = N/2$. This result is in agreement with the structural controllability theory \cite{liu2011controllability}. According to the structural controllability theory, many element cycles can be controlled by a single controller. And given $N$ nodes, the maximum number of element cycles is $N/2$, because we need at least two nodes to construct a element cycle. If a network is not structurally controllable, then it is not controllable. If $N_D \ge 2$, and we know that $N_C \le N$ at any time, thus $N_D/N_C \le N/2$. Then we have proved that $N/2$ is the upper  And use the same method, we can show that $\left \lceil \frac{N}{2} \right \rceil$ is the upper bound of $N_C/N_D$. So the upper bound of $N_C/N_D$ is $N_C = \left \lceil \frac{N}{2} \right \rceil$.
+
+Combine the results together, we get:
+\begin{equation*}
+1 \le N_D / N_C \le \left \lceil \frac{N}{2} \right \rceil
+\end{equation*}
+
+\subsection{Lower and Upper bounds of $N_C$}
+From the exact controllability theory, we know that $N_D = \max_i {\mu(\lambda_i)}$. In the last subsection, we have shown that $N_C/N_D \ge 1$. Take them together, we can conclude that $N_C \ge 1$.
+
+To guarantee the fully controllability of $G(A)$, we need to ensure that for each eigenvalue of matrix A, the PBH rank condition is satisfied. To satisfy the PBH rank condition for eigenvalue $\lambda_i$, $\mu(\lambda_i)$ nodes must be directly controlled by controllers, where $\mu(\lambda_i)$ is the geometric multiplicity of eigenvalue $\lambda_i$.
+Therefore, the total number of nodes that need to be directly controlled could reach $\sum\limits_{i=1}^l \mu(\lambda_i)$ at most. In other words, the upper bound of $N_C$ is $\sum\limits_{i=1}^l \mu(\lambda_i)$.
+
+Combine these together, we have:
+\begin{equation*}
+\max_i {\mu(\lambda_i)} \le N_C \le \sum\limits_{i=1}^l \mu(\lambda_i)
+\end{equation*}
+
+\section{Design of Minimum Set of Control Nodes}
+In this section, we will prove that the MSC problem don't have 
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}
+
+
