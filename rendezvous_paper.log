@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2017.11.20)  15 DEC 2017 12:03
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2017.11.20)  28 DEC 2017 16:16
 entering extended mode
 **C:/Users/ASUS/Desktop/rendezvous_paper1/rendezvous_paper.tex
 (C:/Users/ASUS/Desktop/rendezvous_paper1/rendezvous_paper.tex
@@ -437,79 +437,113 @@ LaTeX Warning: No \author given.
 LaTeX Warning: No \author given.
 
 
-Underfull \hbox (badness 7888) in paragraph at lines 83--85
-[]\OT1/ptm/b/it/9 Index Terms\OT1/ptm/b/n/9 ---Heterogenous Cog-ni-tive Ra-dio 
-Net-work,
- []
-
-
-Underfull \hbox (badness 4699) in paragraph at lines 130--131
-[]\OT1/ptm/m/n/10 We pro-pose a non-anonymous het-ero-ge-neous ren-
+Underfull \hbox (badness 1424) in paragraph at lines 159--161
+[]\OT1/ptm/b/n/10 (iv) Global-sequence-based/local-sequence-based al-go-
  []
 
 [1{C:/CTEX/UserData/pdftex/config/pdftex.map{Unicode.sfd}{UGBK.sfd}}
 
 
-]
-<theo.pdf, id=20, 1064.77805pt x 174.05025pt>
+] [2]
+<theo.pdf, id=40, 1064.77805pt x 174.05025pt>
 File: theo.pdf Graphic file (type pdf)
  <use theo.pdf>
-Package pdftex.def Info: theo.pdf used on input line 197.
+Package pdftex.def Info: theo.pdf used on input line 235.
 (pdftex.def)             Requested size: 252.0pt x 41.19128pt.
- [2 <C:/Users/ASUS/Desktop/rendezvous_paper1/theo.pdf>]
-<olp1.pdf, id=139, 605.26125pt x 223.43475pt>
+
+<olp1.pdf, id=46, 605.26125pt x 223.43475pt>
 File: olp1.pdf Graphic file (type pdf)
  <use olp1.pdf>
-Package pdftex.def Info: olp1.pdf used on input line 216.
+Package pdftex.def Info: olp1.pdf used on input line 256.
 (pdftex.def)             Requested size: 115.63243pt x 42.68488pt.
 
-<olp2.pdf, id=140, 605.26125pt x 223.43475pt>
+<olp2.pdf, id=47, 605.26125pt x 223.43475pt>
 File: olp2.pdf Graphic file (type pdf)
  <use olp2.pdf>
-Package pdftex.def Info: olp2.pdf used on input line 220.
+Package pdftex.def Info: olp2.pdf used on input line 260.
 (pdftex.def)             Requested size: 115.63243pt x 42.68488pt.
- [3 <C:/Users/ASUS/Desktop/rendezvous_paper1/olp1.pdf> <C:/Users/ASUS/Desktop/r
-endezvous_paper1/olp2.pdf>]
+ [3 <C:/Users/ASUS/Desktop/rendezvous_paper1/theo.pdf> <C:/Users/ASUS/Desktop/r
+endezvous_paper1/olp1.pdf> <C:/Users/ASUS/Desktop/rendezvous_paper1/olp2.pdf>]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 263.
- <seq.pdf, id=243, 467.34601pt x 82.50824pt>
-File: seq.pdf Graphic file (type pdf)
- <use seq.pdf>
-Package pdftex.def Info: seq.pdf used on input line 285.
-(pdftex.def)             Requested size: 252.0pt x 44.48956pt.
+put line 303.
 
-<round.pdf, id=246, 757.6305pt x 324.61275pt>
+<sq1.pdf, id=244, 345.08923pt x 82.50824pt>
+File: sq1.pdf Graphic file (type pdf)
+ <use sq1.pdf>
+Package pdftex.def Info: sq1.pdf used on input line 363.
+(pdftex.def)             Requested size: 115.63243pt x 27.64577pt.
+
+<sq2.pdf, id=245, 345.08923pt x 82.50824pt>
+File: sq2.pdf Graphic file (type pdf)
+ <use sq2.pdf>
+Package pdftex.def Info: sq2.pdf used on input line 367.
+(pdftex.def)             Requested size: 115.63243pt x 27.64577pt.
+
+<rotate-theo.pdf, id=246, 644.4075pt x 157.78949pt>
+File: rotate-theo.pdf Graphic file (type pdf)
+ <use rotate-theo.pdf>
+Package pdftex.def Info: rotate-theo.pdf used on input line 382.
+(pdftex.def)             Requested size: 252.0pt x 61.70377pt.
+
+[4 <C:/Users/ASUS/Desktop/rendezvous_paper1/sq1.pdf> <C:/Users/ASUS/Desktop/ren
+dezvous_paper1/sq2.pdf> <C:/Users/ASUS/Desktop/rendezvous_paper1/rotate-theo.pd
+f>] <subcasei.pdf, id=367, 492.03827pt x 140.32425pt>
+File: subcasei.pdf Graphic file (type pdf)
+ <use subcasei.pdf>
+Package pdftex.def Info: subcasei.pdf used on input line 417.
+(pdftex.def)             Requested size: 115.63243pt x 32.9762pt.
+
+<subcaseii.pdf, id=368, 492.03827pt x 140.32425pt>
+File: subcaseii.pdf Graphic file (type pdf)
+ <use subcaseii.pdf>
+Package pdftex.def Info: subcaseii.pdf used on input line 421.
+(pdftex.def)             Requested size: 115.63243pt x 32.9762pt.
+
+<round.pdf, id=378, 757.6305pt x 324.61275pt>
 File: round.pdf Graphic file (type pdf)
  <use round.pdf>
-Package pdftex.def Info: round.pdf used on input line 327.
+Package pdftex.def Info: round.pdf used on input line 492.
 (pdftex.def)             Requested size: 252.0pt x 107.96953pt.
 
-<case1.pdf, id=253, 820.86674pt x 314.37451pt>
+<case1.pdf, id=380, 820.86674pt x 314.37451pt>
 File: case1.pdf Graphic file (type pdf)
  <use case1.pdf>
-Package pdftex.def Info: case1.pdf used on input line 347.
+Package pdftex.def Info: case1.pdf used on input line 503.
 (pdftex.def)             Requested size: 115.63243pt x 44.28075pt.
 
-<case2.pdf, id=254, 820.86674pt x 314.37451pt>
+<case2.pdf, id=381, 820.86674pt x 314.37451pt>
 File: case2.pdf Graphic file (type pdf)
  <use case2.pdf>
-Package pdftex.def Info: case2.pdf used on input line 351.
+Package pdftex.def Info: case2.pdf used on input line 507.
 (pdftex.def)             Requested size: 115.63243pt x 44.28075pt.
- [4 <C:/Users/ASUS/Desktop/rendezvous_paper1/seq.pdf> <C:/Users/ASUS/Desktop/re
-ndezvous_paper1/round.pdf> <C:/Users/ASUS/Desktop/rendezvous_paper1/case1.pdf> 
-<C:/Users/ASUS/Desktop/rendezvous_paper1/case2.pdf>] [5]
-<two-radio.pdf, id=494, 800.9925pt x 484.81125pt>
-File: two-radio.pdf Graphic file (type pdf)
- <use two-radio.pdf>
-Package pdftex.def Info: two-radio.pdf used on input line 426.
-(pdftex.def)             Requested size: 252.0pt x 152.524pt.
+ [5 <C:/Users/ASUS/Desktop/rendezvous_paper1/subcasei.pdf> <C:/Users/ASUS/Deskt
+op/rendezvous_paper1/subcaseii.pdf>]
+Underfull \hbox (badness 3646) in paragraph at lines 548--548
+[]\OT1/ptm/b/n/10 Algorithm 4 \OT1/ptm/m/n/10 Channel-Label-Based Local-sequenc
+e-based
+ []
 
-<semi.pdf, id=505, 820.26451pt x 328.22626pt>
-File: semi.pdf Graphic file (type pdf)
- <use semi.pdf>
-Package pdftex.def Info: semi.pdf used on input line 498.
-(pdftex.def)             Requested size: 252.0pt x 100.83757pt.
- [6 <C:/Users/ASUS/Desktop/rendezvous_paper1/two-radio.pdf>]
+<situation1.pdf, id=469, 302.93173pt x 157.78949pt>
+File: situation1.pdf Graphic file (type pdf)
+ <use situation1.pdf>
+Package pdftex.def Info: situation1.pdf used on input line 595.
+(pdftex.def)             Requested size: 57.81621pt x 30.11273pt.
+
+<situation2.pdf, id=470, 302.93173pt x 157.78949pt>
+File: situation2.pdf Graphic file (type pdf)
+ <use situation2.pdf>
+Package pdftex.def Info: situation2.pdf used on input line 599.
+(pdftex.def)             Requested size: 57.81621pt x 30.11273pt.
+
+<situation3.pdf, id=471, 302.93173pt x 157.78949pt>
+File: situation3.pdf Graphic file (type pdf)
+ <use situation3.pdf>
+Package pdftex.def Info: situation3.pdf used on input line 603.
+(pdftex.def)             Requested size: 57.81621pt x 30.11273pt.
+
+[6 <C:/Users/ASUS/Desktop/rendezvous_paper1/round.pdf> <C:/Users/ASUS/Desktop/r
+endezvous_paper1/case1.pdf> <C:/Users/ASUS/Desktop/rendezvous_paper1/case2.pdf>
+]
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -521,41 +555,41 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 526.
-[7
-
- <C:/Users/ASUS/Desktop/rendezvous_paper1/semi.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 526.
-
-(C:\Users\ASUS\Desktop\rendezvous_paper1\rendezvous_paper.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 526.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 526.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 650.
+[7 <C:/Users/ASUS/Desktop/rendezvous_paper1/situation1.pdf> <C:/Users/ASUS/Desk
+top/rendezvous_paper1/situation2.pdf> <C:/Users/ASUS/Desktop/rendezvous_paper1/
+situation3.pdf>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 650.
+ (C:\Users\ASUS\Desktop\rendezvous_paper1\rendezvous_paper.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 650.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 650.
  ) 
 Here is how much of TeX's memory you used:
- 7005 strings out of 495354
- 101569 string characters out of 3183858
- 207189 words of memory out of 3000000
- 9975 multiletter control sequences out of 15000+200000
+ 7077 strings out of 495354
+ 102513 string characters out of 3183858
+ 210522 words of memory out of 3000000
+ 10015 multiletter control sequences out of 15000+200000
  40209 words of font info for 80 fonts, out of 3000000 for 9000
  17 hyphenation exceptions out of 8191
- 29i,9n,24p,1715b,602s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 29i,10n,24p,1664b,696s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/CTEX/MiKTeX/fonts/enc/dvips/fontname/8r.enc}<C:/CTEX/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmmi10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmm
-i5.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/CTEX/MiKTeX
-/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/CTEX/MiKTeX/fonts/type1/public/am
-sfonts/cm/cmmi8.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C
-:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/CTEX/MiKTeX/fonts/ty
-pe1/public/amsfonts/cm/cmr6.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/
-cmr7.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/CTEX/MiKTe
-X/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/CTEX/MiKTeX/fonts/type1/public/am
-sfonts/cm/cmsy10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><
-C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/CTEX/MiKTeX/fonts/t
-ype1/urw/times/utmb8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:
-/CTEX/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/t
-imes/utmri8a.pfb>
-Output written on rendezvous_paper.pdf (7 pages, 2225623 bytes).
+ublic/amsfonts/cmextra/cmex8.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm
+/cmmi10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/CTEX/M
+iKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/CTEX/MiKTeX/fonts/type1/publ
+ic/amsfonts/cm/cmmi7.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.p
+fb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/CTEX/MiKTeX/fon
+ts/type1/public/amsfonts/cm/cmr10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfon
+ts/cm/cmr6.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/CTEX
+/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/CTEX/MiKTeX/fonts/type1/pub
+lic/amsfonts/cm/cmr9.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.
+pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/CTEX/MiKTeX/fo
+nts/type1/public/amsfonts/cm/cmsy9.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/times/ut
+mb8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/CTEX/MiKTeX/font
+s/type1/urw/times/utmr8a.pfb><C:/CTEX/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+
+Output written on rendezvous_paper.pdf (7 pages, 2884855 bytes).
 PDF statistics:
- 776 PDF objects out of 1000 (max. 8388607)
- 117 named destinations out of 1000 (max. 500000)
- 46 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 821 PDF objects out of 1000 (max. 8388607)
+ 144 named destinations out of 1000 (max. 500000)
+ 71 words of extra memory for PDF output out of 10000 (max. 10000000)
 
