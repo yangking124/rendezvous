@@ -22,6 +22,7 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{threeparttable}
+\usepackage{epstopdf}
 
 
 %
@@ -58,7 +59,7 @@
 \begin{document}
 
 
-\bibliographystyle{plain}
+
 
 \title{How Local Information Improves Rendezvous in Cognitive Radio Networks}
 
@@ -76,7 +77,7 @@
 
 
 \begin{abstract}
-Cognitive Radio Network (CRN) is a promising technique aiming at solving the wireless spectrum scarcity problem. Rendezvous is the fundamental process of CRN.  We are devoted to design faster rendezvous algorithms for CRN. We find that local information such as user's ID and the label of an available channel is very useful for designing faster rendezvous algorithms. First, we propose an Asynchronous  Anonymous Non-oblivious Global-channel-based (AANG) algorithm. AANG algorithm can guarantee rendezvous for any two users $i,j$ in $2P^2+2P$ timeslots, where $P$ is the least prime not less than the total number of channels in the network. Second, we utilize the user's identifier (ID) to design an Asynchronous Non-anonymous Oblivious Local-channel-based (ANOL) algorithm. ANOL algorithm can guarantee rendezvous for any two users $i$ and $j$ in $(l+1)(P_i+2)(P_j+2)$ timeslots, where $P_i$ and $P_j$ are the smallest primes which are not less than the numbers of available channels of user $i$ and $j$ respectively. Third, we propose an Asynchronous Anonymous Non-obvious Local-sequence-based (AANL) rendezvous algorithm which can guarantee rendezvous for any two users in $((P_i +2)(P_j+2) + P)(\left \lceil log_2 N \right \rceil + 1)$ timeslots, where $N$ is the overall amount of channels in the network and $P$ is the least prime which is not less than $N$.  All of our algorithms can be used in multi-user scenario. We conduct plenty of experiments comparing our algorithms with state-of-the-art rendezvous algorithms under different scenarios, which corroborate our analysis.
+Cognitive Radio Network (CRN) is a promising technique aiming at solving the wireless spectrum scarcity problem. Rendezvous is the fundamental process of CRN.  We are devoted to design faster rendezvous algorithms for CRN. We find that local information such as user's ID and the label of an available channel is very useful for designing faster rendezvous algorithms. First, we propose the Sequence-Rotating Rendezvous (SRR) algorithm. SRR algorithm can guarantee rendezvous for any two users $i,j$ in $(2 P^2+2P)$ timeslots, where $P$ is the least prime not less than the total number of channels in the network. SRR algorithm has a lower MTTR than the extant asynchronous anonymous non-oblivious global-sequence-based rendezvous algorithms. Second, we utilize the user's identifier (ID) to design an ID-based Rendezvous (IDR) algorithm. IDR algorithm can guarantee rendezvous for any two users $i$ and $j$ in $(l+1)(P_i+2)(P_j+2)$ timeslots, where $P_i$ and $P_j$ are the smallest primes which are not less than the numbers of available channels of user $i$ and $j$ respectively. IDR algorithm has a lower MTTR than the extant asynchronous non-anonymous oblivious local-sequence-based rendezvous algorithms. Third, we propose a Channel-Label-based Rendezvous (CLR) algorithm which can guarantee rendezvous for any two users in $((P_i +2)(P_j+2) + P_N)(\left \lceil log_2 N \right \rceil + 1)$ timeslots, where $N$ is the overall amount of channels in the network and $P_N$ is the least prime which is not less than $N$.  All of our algorithms can be used in multi-user scenario. We conduct plenty of experiments comparing our algorithms with state-of-the-art rendezvous algorithms under different scenarios, which confirm our analysis.
 \end{abstract}
 
 
@@ -85,94 +86,102 @@ Cognitive Radio Network, Local Information, Rendezvous Algorithms, Channel Label
 \end{IEEEkeywords}
 
 \section{Introduction}
-The wireless spectrum is invaluable for the transmission of wireless signals because the resource of wireless spectrum is finite. The wireless spectrum is divided into licensed spectrums and unlicensed spectrums. However, the overcrowding problem of the unlicensed spectrums is becoming more and more severe due to the rapid growth of wireless devices. On the other hand, the utilization rate of the licensed spectrums is relatively low. Cognitive Radio Network (CRN) is a promising solution for this problem. In CRN, there exist two kinds of users, primary users (PUs) and secondary users (SUs). A PU owns one or more licensed channels while a SU needs to search for ``empty" licensed spectrums which are not occupied by PUs \footnote{Unless specifically pointed out, ``users" in the rest of this paper refer to SUs.} to complete communication task.
+Wireless spectrum is an invaluable resource for transmission between wireless devices.
+Normally speaking, wireless spectrum is divided into licensed spectrum which is occupied by paying users (also called primary users, PUs) and unlicensed spectrum which is free for unlicensed users (also called secondary users, SUs).
+With the development of wireless technology, unlicensed spectrum is becoming more and more severe due to rapid growth of wireless devices \cite{Li2013Economic} and wireless services. However, the utilization rate of licensed spectrum is relatively low \cite{Min2014A} \cite{Jia2010Analysis}. Cognitive radio networks (CRNs) are thus proposed to alleviate the spectrum scarcity problem, which allows SUs to sense and utilize vacant licensed spectrum for communication by equipping with cognitive radios.
+\footnote{Unless specifically stated, ``users'' in the rest of the paper refer to SUs.}
 
-CRN contains many important stages such as broadcasting, routing, data gathering, neighbor discovery and so on. \emph{Rendezvous} is the fundamental task of CRN, which targets finding a common frequency band (channel) for different users to communicate on. Before rendezvous completes, a user may even not aware of the existence of another user, let alone exchange information.
 
-
-To achieve rendezvous between users, many solutions have been proposed. Some works requires a central controller or a common control channel (CCC) to achieve rendezvous. However, it is not practical to establish a central controller to control all the users in large-scale networks. And if the number of users exceeds the capacity of the central controller or CCC, this method will become invalid. And it is not safe from the perspective of information security, for the probability of adversary attacks. Hence, some researchers proposed some algorithms without central controller or CCC, which are called blind rendezvous algorithms. Blind rendezvous algorithms are more practical than CCC based rendezvous algorithms. Channel Hopping (CH) technique is widely used in blind rendezvous algorithms. In CH algorithms, users hop to channels according to predefined sequences.
+In CRN, there exist many important processes such as broadcasting, routing, data gathering, etc. \emph{Rendezvous} is a fundamental process of CRN, which targets finding a licensed channel on which two neighboring users can communicate.
+Since PUs have higher priority than SUs, when a PU is occupying a channel, every SU cannot access it.
+To construct a communication link on a common channel, some works assume a central controller or a common control channel exists which gets full knowledge of users' available channel sets, then two users can be assigned with a common available channel for communication\cite{Jia2008HC} \cite{Kondareddy2009Cognitive} \cite{Ma2005Dynamic} \cite{Perez2007A}. However, establishing a central controller is cost and vulnerable if a huge number of users require communication concurrently or the central controller gets attacked. Therefore, more distributed rendezvous algorithms are proposed which assume two users do not know each other's information and the users run their algorithms separately  \cite{Lin2013Enhanced} \cite{Gu2013Nearly} \cite{Shin2010A} \cite{Wu2013On} \cite{Wu2014Rendezvous}. This kind of algorithms is also called ``blind'' rendezvous algorithms and it becomes more practical than centralized algorithms. Channel Hopping (CH) technique \cite{Bian2009A} \cite{Bian2011Control} is a widely adopted method in blind rendezvous algorithms, in which a user selects a channel for rendezvous attempt according to a pre-generated channel hopping sequence.
+Most blind rendezvous algorithms utilize the labels of channels to construct CH sequences. Some blind rendezvous algorithms also utilize users' IDs in their construction of CH sequences.
 
 \begin{table*}[!t]
 \renewcommand{\arraystretch}{1.3}
  \caption{\upshape Comparisons between rendezvous algorithms }
 \centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\multirow{2}*{Algorithm} &  \multirow{2}*{MTTR} & \multirow{2}*{RD} & \multirow{2}*{Time} & Anonymous or & Oblivious or &\multirow{2}*{Sequence}& Single Radio\\
- & & &  & Non-Anonymous & Non-Oblivious & & or Multi-radio\\
+\multirow{2}*{Algorithm} &  \multirow{2}*{MTTR}  & \multirow{2}*{Time} & Anonymous or & Oblivious or &\multirow{2}*{Sequence} &Symmetric or\\
+ &   & & Non-Anonymous & Non-Oblivious & & Asymmetric\\
  \hline
-JS & 3NP(P-G) +3P & 100\% & Asynchronous & Anonymous & Non-Oblivious & Global & Single-radio\\
+%JS & 3NP(P-G) +3P  & Asynchronous & Anonymous & Non-Oblivious & Global & Single-radio\\
+%\hline
+DRDS \cite{Gu2013Nearly}& $3P^2 + 2P$  & Asynchronous & Anonymous & Non-Oblivious & Global & Asymmetric\\
 \hline
-DRDS & $3P^2 + 2P$ & 100\% & Asynchronous & Anonymous & Non-Oblivious & Global & Single-radio\\
+CBH \cite{Gu2014Fully}& $2l_pP^2$ & Asynchronous & Non-Anonymous & Oblivious & Local & Asymmetric\\
 \hline
-CBH & $2l_pP^2$ & 100\% & Asynchronous & Non-Anonymou & Oblivious & Local & Single-radio\\
-\hline
-HH & $3|C_a||C_b|$ &$ 100\%$ & Asynchronous & Anonymous & Non-Oblivious & Local & Single-radio\\
-\hline
+%HH & $3|C_a||C_b|$ & Asynchronous & Anonymous & Non-Oblivious & Local & Single-radio\\
+%\hline
 
 
-Adv.rdv-$l$ & $(g+log_2g)P_iP_j$ & 100\% & Asynchronous & Non-Anonymous & Oblivious & Local & Single-radio\\
+A-HCH-Optimal \cite{Chen2014A}*& $\approx (l+log_2l)P_iP_j$ & Asynchronous & Non-Anonymous & Oblivious & Local & Asymmetric\\
 \hline
 
-Adv.rdv-$\eta_1$ & $(2g+3)P_iP_j$ & 100\% & Asynchronous & Non-Anonymous & Oblivious & Local & Single-radio\\
+A-HCH-$\eta_1$ \cite{Chen2014A}& $(2l+3)P_iP_j$ & Asynchronous & Non-Anonymous & Oblivious & Local & Asymmetric\\
 
 \hline
-%(g+\left \lceil \sqrt{g} \right \rceil (2 + \left \lceil log_2g \right \rceil)
-\multirow{2}*{Adv.rdv-$\eta_2$ }&  $(g+\left \lceil \sqrt{g} \right \rceil (2 $ & \multirow{2}*{100\%} & \multirow{2}*{Asynchronous} & \multirow{2}*{Non-Anonymous} & \multirow{2}*{Oblivious} & \multirow{2}*{Local} & \multirow{2}*{Single-radio}\\
- & $+ \left \lceil log_2g \right \rceil)P_iP_j$ &  & & & & & \\
+\multirow{2}*{A-HCH-$\eta_2$ \cite{Chen2014A}}&  $(l+\left \lceil \sqrt{l} \right \rceil (2 $  & \multirow{2}*{Asynchronous} & \multirow{2}*{Non-Anonymous} & \multirow{2}*{Oblivious} & \multirow{2}*{Local} & \multirow{2}*{Asymmetric}\\
+ & $+ \left \lceil log_2l \right \rceil)P_iP_j$ &  & & &  & \\
  \hline
 
 % GCR & $max\{p_i,p_i'\}max\{p_j,p_j'\}$ &  100\% & Asynchronous & Anonymous & Oblivious & Local & Two-radio\\
 % \hline
 %
-%\multirow{2}*{AMRR} & $max\{|V_1|,|V_2|\}$ & \multirow{2}*{100\%} & \multirow{2}*{Asynchronous} & \multirow{2}*{Anonymous} & \multirow{2}*{Oblivious} & \multirow{2}*{Local} & \multirow{2}*{Multi-radio} \\
-% & $\times (max\{|V_1|,|V_2|\}+1) $  & & & & & & \\
-%\hline
+%AMRR & $O(\frac{|C_1||C_2|}{m_1m_2})$ & Asynchronous & Anonymous& Oblivious & Local & Asymmetric \\
 
-\multirow{2}*{MTP} & $2(max\{m_a,m_b\})^2$ & \multirow{2}*{100\%}& \multirow{2}*{Asynchronous}  & \multirow{2}*{Anonymous} & \multirow{2}*{Oblivious} & \multirow{2}*{Local} & \multirow{2}*{Multi-radio}\\
- & $\times 32(\left \lceil loglog \; n \right \rceil + 1)$ & & & & & & \\
+
+\multirow{2}*{MTP\cite{Gu2015Improved}} & $2(max\{|V_i|,|V_j|\})^2$ & \multirow{2}*{Asynchronous}  & \multirow{2}*{Anonymous} & \multirow{2}*{Oblivious} & \multirow{2}*{Local} & \multirow{2}*{Asymmetric} \\
+ & $\times 32(\left \lceil loglog \; n \right \rceil + 1)$ & & & & & \\
 \hline
 
-AANG(this paper) & $2P^2 + 2P$ & $<100\%$ & Asynchronous & Anonymous & Oblivious & Global & Single-radio\\
+SRR(this paper) & $2P^2 + 2P$ & Asynchronous & Anonymous & Oblivious & Global & Asymmetric \\
 \hline
-ANOL(this paper) & $(l  + 1)(P_i + 2)(P_j + 2)$ & 100\% &Asynchronous & Non-Anonymous & Oblivious & Local & Single-radio\\
+IDR(this paper) & $(l  + 1)(P_i + 2)(P_j + 2)$ &Asynchronous & Non-Anonymous & Oblivious & Local & Asymmetric \\
 \hline
 %ANOL(this paper) & $3(P_i+1)(P_j+1)(\left \lceil log_2N \right \rceil +1)$ & $<100\%$ &Asynchronous & Non-Anonymous & Oblivious & Local & Single-radio\\
 %\hline
 
-\multirow{2}*{ANOL(this paper)} & $((P_i +2)(P_j+2) + P)$ & \multirow{2}*{$<100\%$}& \multirow{2}*{Asynchronous}  & \multirow{2}*{Anonymous} & \multirow{2}*{Oblivious} & \multirow{2}*{Local} & \multirow{2}*{Single-radio}\\
- & $\times (\left \lceil log_2N \right \rceil +1)$ & & & & & & \\
+\multirow{2}*{CLR(this paper)} & $((P_i +2)(P_j+2) + P_N)$ & \multirow{2}*{Asynchronous}  & \multirow{2}*{Anonymous} & \multirow{2}*{Oblivious} & \multirow{2}*{Local} & \multirow{2}*{Asymmetric}\\
+ & $\times (\left \lceil log_2N \right \rceil +1)$ &  & & & & \\
 \hline
 %SSH(this paper) & $N$ & 100\% & semi-synchronous &$\times$ &$\times $ & $\times$ \\
 %\hline
 \end{tabular}
+
+
+
+
+\begin{tablenotes}\item[1] \bfseries Remark: \mdseries $n$ is the total number of channels in the network; $P$ is the smallest prime which is not less than $n$; $l$ is the length of user ID; $|V_i|$ and $|V_j|$ are the sizes of the available channel sets of user $i$ and $j$ respectively; $P_i$ and $P_j$ are the smallest primes which are not less than $|V_i|$ and $|V_j$ respectively; $P_N$ is the smallest prime which is not less than $n$; * denotes that this algorithm is a centralized algorithm.
+\end{tablenotes}
 \end{table*}
 
 Existing blind rendezvous algorithms can be categorized into different categories as follows.
 
-\bfseries (i) Synchronous/asynchronous algorithms. \mdseries  Synchronous algorithms suppose there exists a global clock and every user in the network starts rendezvous process at the same time. Asynchronous algorithms don't require a global clock and every user can start rendezvous process at any time.
+\bfseries (i) Synchronous/asynchronous algorithms. \mdseries  Synchronous algorithms \cite{Zhang2014Channel} \cite{Wu2014CACH} \cite{Mohapatra2016ASCH} suppose there exists a global clock and every user in the network starts rendezvous process at the same time. Asynchronous algorithms \cite{Gu2014Fully} \cite{Gu2013Nearly} \cite{Chawla2017Comprehensive} don't require a global clock and every user can start rendezvous process at any time.
 
-\bfseries (ii) Anonoymous/non-anonymous algorithms. \mdseries Anonymous algorithms don't require every user to have a unique ID. Non-anonymous algorithms suppose there exists a unique identifer (ID) for every user and take use of a user's ID to generate the channel hopping sequence.
+\bfseries (ii) Anonoymous/non-anonymous algorithms. \mdseries Anonymous algorithms \cite{Gu2013Nearly} \cite{Lin2013Enhanced} don't require every user to have a unique ID. Non-anonymous algorithms \cite{Gu2014Fully} \cite{Chen2014A} suppose there exists a unique identifer (ID) for every user and take use of a user's ID to generate the channel hopping sequence.
 
-\bfseries (iii) Oblivious/non-oblivious algorithms. \mdseries Oblivious algorithms don't require there exists a global labeling of all the channels and every user labels channels in the same way. Non-oblivious algorithms require global labeling of channels and leverages it to guarantee rendezvous.
+\bfseries (iii) Oblivious/non-oblivious algorithms. \mdseries Oblivious algorithms \cite{Gu2014Fully} \cite{Chen2014A} don't require there exists a global labeling of all the channels and every user labels channels in the same way. Non-oblivious algorithms \cite{Gu2014Fully} \cite{Gu2013Nearly} \cite{Lin2013Enhanced} require global labeling of channels and leverages it to guarantee rendezvous.
 
-\bfseries (iv) Global-sequence-based/local-sequence-based algorithms. \mdseries Global-sequence-based algorithms construct channel hopping sequences containing all the channels. If a channel is not in the available channel set of a user, replace it with one available channel.
-Local-sequence-based algorithms generates channel hopping sequences utilizing only the local available channels as if a user is not aware of the existence of other channels.
+\bfseries (iv) Global-sequence-based/local-sequence-based algorithms. \mdseries Global-sequence-based algorithms \cite{Gu2013Nearly} \cite{Yang2016A} construct channel hopping sequences containing all the channels. If a channel is not in the available channel set of a user, replace it with one available channel.
+Local-sequence-based algorithms \cite{Wu2014Rendezvous} \cite{Wu2013On} \cite{Gu2014Fully}generates channel hopping sequences utilizing only the local available channels as if a user is not aware of the existence of other channels.
 
-\bfseries (v) Single-radio/multi-radio algorithms. \mdseries Single-radio algorithms suppose every user in the network is equipped with only one cognitive radio. Hence, one user can once can only hop to one channel. Multi-radio algorithms assume every user in the network is equipped with more than one cognitive radios. Hence, one user can hop to one or more channels simultaneously.
+\bfseries (v) Single-radio/multi-radio algorithms. \mdseries Single-radio algorithms \cite{Wu2014Rendezvous} \cite{Wu2013On} \cite{Gu2014Fully}\cite{Gu2014Fully} \cite{Gu2013Nearly} \cite{Lin2013Enhanced} suppose every user in the network is equipped with only one cognitive radio. Hence, one user can once can only hop to one channel. Multi-radio algorithms \cite{Li2014Deterministic} \cite{Yu2015Adjustable} \cite{Yang2016Fully} assume every user in the network is equipped with more than one cognitive radios. Hence, one user can hop to one or more channels simultaneously.
 
-Rendezvous algorithms can be judged according to some common metrics, such as \emph{Expected Time To Rendezvous (ETTR)}, \emph{Maximum Time To Rendezvous (MTTR)}, \emph{Average Time To Rendezvous (ATTR)}, \emph{Rendezvous Degree (RD)}. \emph{Time To Rendezvous (TTR)} is the number of timeslots consumed from the last user starts rendezvous until the completion of rendezvous. ATTR is the average TTR of an algorithm. MTTR is the maximum TTR needed to achieve rendezvous. In other words, MTTR is the TTR in the worst case. It is obvious that two users can have more than one common channel, RD is the ratio of the least number of different rendezvous channels to the total number of common channels between any two users. It is obvious that the larger RD is, the more channels two users can rendezvous on. Because a channel can be not accessible to a user for some reasons, a larger ID can increase the probability of rendezvous between users. In other words, the larger RD is, the better.
+Rendezvous algorithms can be judged according to some common metrics, such as \emph{Maximum Time To Rendezvous (MTTR)}, \emph{Average Time To Rendezvous (ATTR)}. \emph{Time To Rendezvous (TTR)} is the number of timeslots consumed from the last user starts rendezvous until the completion of rendezvous. ATTR is the average TTR of an algorithm. MTTR is the maximum TTR needed to achieve rendezvous. In other words, MTTR is the TTR in the worst case.
 
-In this paper, we introduce some simple but time-efficient rendezvous algorithms under different scenarios. The following are the main contributions of our paper:
+In this paper, we introduce some simple but time-efficient rendezvous algorithms utilizing local information. The following are the main contributions of our paper:
 \begin{itemize}
-\item[1)] We propose a non-anonymous local-sequence-based rendezvous algorithm which outperforms state-of-the-art non-anonymous local-sequence-based rendezvous algorithms.
-\item[2)] We propose a two-radio local-sequence-based rendezvous algorithm which outperforms the state-of-the-art two-radio local-sequence-based rendezvous algorithm.
-\item[3)] We formulate the concept of semi-synchronous model and propose a semi-synchronous global-sequence-based rendezvous algorithm which is feasible and has a MTTR of $N$, which is least in all the existing rendezvous algorithms.
-\item[4)] We conduct lots of experiments to compare our algorithms with state-of-the-art algorithms. The results show that our algorithms outperforms state-of-the-art rendezvous algorithms.
+\item[1)] We propose the Sequence-Rotating Rendezvous (SRR) algorithm utilizing the label of an arbitrary available channel of a user, which has lower MTTR comparing with the extant asynchronous anonymous non-obvious global-sequence-based rendezvous algorithms;
+\item[2)] We propose the ID-based Rendezvous (IDR) algorithm which has lower MTTR comparing with the extant asynchronous non-anonymous obvious local-sequence-based rendezvous algorithms;
+\item[3)] We propose the Channel-Label-based Rendezvous (CLR) algorithm utilizing the label of an arbitrary available channel of a user, which has lower MTTR comparing with the extant asynchronous anonymous non-obvious local-sequence-based rendezvous algorithms;
+\item[4)] We conduct plenty of experiments to compare our algorithms with state-of-the-art algorithms. The results show that our algorithms achieve better performance.
 \end{itemize}
 
 
-The rest of this paper is organized as follows. Section \uppercase\expandafter{\romannumeral2} introduces the background and some related works. Section \uppercase\expandafter{\romannumeral3} introduces different categories of models for rendezvous problem and problem formulation. Section \uppercase\expandafter{\romannumeral4} presents a non-anonymous local-sequence-based rendezvous algorithm and analyzes its performance. Section \uppercase\expandafter{\romannumeral5} presents a two-radio local-sequence-based rendezvous algorithm and analyzes its performance. Section \uppercase\expandafter{\romannumeral6} presents a semi-synchronous global-sequence-based rendezvous algorithm and analyzes its performance. Simulation results are displayed in Section Section \uppercase\expandafter{\romannumeral7}. And we conclude this paper in Section \uppercase\expandafter{\romannumeral8}.
+The rest of this paper is organized as follows. Section \uppercase\expandafter{\romannumeral2} introduces the background and some related works. Section \uppercase\expandafter{\romannumeral3} introduces the fundamental model and problem formulation. Section \uppercase\expandafter{\romannumeral4} presents the details of SRR algorithm and analyzes its performance. Section \uppercase\expandafter{\romannumeral5} presents the details of IDR algorithm and analyzes its performance. Section \uppercase\expandafter{\romannumeral6} presents the details of CLR algorithm and analyzes its performance. Simulation results are displayed in Section Section \uppercase\expandafter{\romannumeral7}. And we conclude this paper in Section \uppercase\expandafter{\romannumeral8}.
 
 
 
@@ -209,15 +218,19 @@ Two nonzero natural integers a and b are said to be co-prime if the only common 
 
 Co-prime numbers have many important properties:
 \begin{lemma}
+\label{lm2.2}
 If a and b are co-prime, the least common multiple of them is their product: $a \times b$.
 \end{lemma}
 \begin{lemma}
+\label{lm2.3}
 If a and b are two consecutive positive integers, a and b are co-prime.
 \end{lemma}
 \begin{lemma}
+\label{lm2.4}
 If a and b are two consecutive positive odd numbers, a and b are co-prime.
 \end{lemma}
 \begin{lemma}
+\label{lm2.5}
 Suppose a is a prime number and b is a composite number. If a is larger than b, they are co-prime. If b is larger than a, but b is not a multiple of a, they are co-prime.
 \end{lemma}
 
@@ -227,7 +240,7 @@ We then introduce an important theorem for rendezvous:
 If m and n are co-prime numbers, then for any integer a, the integers $a, a + n, a + 2n,\cdots, a+(m-1)n$ are m distinct numbers under modulo-m arithmetic.
 \end{theorem}
 \begin{IEEEproof}
-Choose any two integers from $a, a+n, a + 2n,\cdots, a+(m-1)n$, the absolute value of their difference is kn, where $0 < k < m$. If kn mod m equal 0, then $kn = lm$, where l is a positive integer. Then kn or lm is a common multiple of m and n. From Lemma 2.2 we know mn is the least common multiple of m and n, and because $0 < k < m$, kn is a common multiple of m and n that is less than mn, which is a contradiction. Hence, Theorem \ref{theo} holds.
+Choose any two integers from $a, a+n, a + 2n,\cdots, a+(m-1)n$, the absolute value of their difference is kn, where $0 < k < m$. If kn mod m equal 0, then $kn = lm$, where l is a positive integer. Then kn or lm is a common multiple of m and n. From Lemma \ref{lm2.2} we know mn is the least common multiple of m and n, and because $0 < k < m$, kn is a common multiple of m and n that is less than mn, which is a contradiction. Hence, Theorem \ref{theo} holds.
 \end{IEEEproof}
 
 \begin{figure}[!t]
@@ -238,15 +251,25 @@ Choose any two integers from $a, a+n, a + 2n,\cdots, a+(m-1)n$, the absolute val
 \end{figure}
 
 Fig. \ref{exp1} illustrates an example of Theorem \ref{theo}. In Fig. \ref{exp1}, the first row is a string of numbers starting from 1. The second row is the results of these numbers under modulo 4 arithmetic. The third row is the results of these numbers under modulo 5 arithmetic. We can clearly see that 1, 5, 9, 13, 17 all correspond to 1 under modulo 4 arithmetic, but correspond to 1, 0, 4, 3, 2 respectively under modulo 5 arithmetic, which are all the possible results under modulo 5 arithmetic. Theorem \ref{theo} plays an important role in rendezvous algorithms and is the main tool we use to design the following algorithms.
-\subsection{Related Works}
 
-\section{Models and Problem Formulations}
+\subsection{Related Works}
+Rendezvous algorithms can be classified into different categories according to different standards. One method is to divide rendezvous algorithms into Global-sequence-based rendezvous algorithms and Local-sequence-based rendezvous algorithms.
+
+\bfseries (i) Global-sequence-based rendezvous algorithms. \mdseries
+
+Global-sequence-based rendezvous algorithms design channel hopping sequence based on all the channels in the network. When a channel is not available to a user, the user replaces it with an arbitrary available channel. Jump-Stay (JS)\cite{Liu2012Jump} algorithm is a representative global-sequence-based algorithm which is composed of two patterns: jump-pattern and stay-pattern. JS algorithm uses the thought of number theory and has an MTTR of $O(n^3)$ where $n$ is the number of channels in the network. Enhanced JS \cite{Lin2013Enhanced}algorithm is an enhanced version of JS algorithm which improves the MTTR to $O(n^2)$ level. Disjoint Relaxed Difference Set (DRDS)\cite{Gu2013Nearly} algorithm is another global-sequence-based rendezvous algorithm. The key of DRDS algorithm is to construct a disjoint relaxed difference set. DRDS algorithm can guarantee rendezvous in $O(n^2)$ timeslots. Channel Rendezvous Sequence (CRSEQ)\cite{Shin2010A} algorithms utilizes the triangle number to generate a channel hopping sequence which also guarantee rendezvous in $O(n^2)$ timeslots.
+DSC-based Rendezvous (DSCR)\cite{Yang2016A} algorithm is based on Disjoint Set Cover (DSC), which is an NP-hard problem. DSCR problem generates channel hopping sequences by invoking an approximation construction algorithm of DSC. DSCR algorithm has an MTTR of $(2P+\left \lfloor \frac{P}{2} \right \rfloor)(P-G+1)$ timeslots, where $G$ is the number of common channels that the two users share.
+
+\bfseries (ii) Local-sequence-based algorithms. \mdseries
+
+Local-sequence-based algorithms generate channel hopping sequences based on the set of available channels of a user. Heterogeneous Hopping (HH)\cite{Shin2010A} algorithm is a representative local-sequence-based rendezvous algorithm which is composed of three subsequences named fixed, rotating and parity sequence respectively. HH algorithm uses the thought of number theory and has an MTTR of $O(|C_a||C_a|)$ where $|C_a|$ and $|C_b|$ denotes the sizes  of the sets of continuous sensible channels of user $a$ and $b$ respectively.  Interlocking Channel Hopping (ICH)\cite{Wu2013On} algorithm is based on HH algorithm and takes the congestion problem into consideration. Conversion Based Hopping (CBH)\cite{Gu2014Fully} algorithm is a local-sequence-based rendezvous algorithm which utilizes user' ID. CBH algorithm is also applicable in oblivious scenarios. CBH algorithm has an MTTR of $2l_p$max$\{P_i^2,P_j^2\}$ where $l_p$ is determined by the IDs of user $i$,$j$ and $P_i$,$P_j$ are the smallest  primes which is not less than the sizes of available channel sets of user $i$ and $j$ respectively. A-HCH \cite{Chen2014A} algorithm is another local-sequence-based rendezvous algorithm which utilizes ID. Adv.rdv algorithm constructs channel hopping sequences by generating slow and fast channel hopping sequences and interleaving them. Adv.rdv algorithm has three versions, which are Adv.rdv-Optimal \cite{Chen2014A}, Adv.rdv-$\eta_1$ \cite{Chen2014A} and Adv.rdv-$\eta_2$ \cite{Chen2014A}. The difference of them is the construction of symmetrization classes. Adv.rdv-Optimal is a centralized algorithm which is not applicable to distributed system. Moving Traversing Pointers (MTP) \cite{Gu2015Improved}algorithm utilizes two pointers to generate channel hopping sequences and can guarantee rendezvous in $2(max\{|V_i|,|V_j|\})^2\times32(\left \lceil loglog n\right \rceil +1)$ timeslots.
+
+\section{Model and Problem Formulations}
 In this section, we will introduce the foundation model and some other models which are based on the foundation model. Models are of great importance in the design of rendezvous algorithms, because models constrain the resources that we can use. Hence, we need to design different algorithms under different models to achieve high performance for rendezvous process. We will also give the formulation for rendezvous problem in this section.
 
 
 \subsection{Foundation Model}
-Suppose there are M users in the network. Suppose the licensed spectrum is divided into n channels which are non-overlapping. Denote the set of channels as $U=\{1,2,\cdots,n\}$, where n is the total number of channels in U. We assume that every user in the network is equipped with a CRN. User i can sense a set of channels as
-$C_i=\{c_{i1},c_{i2},\cdots,c_{in_i} \}$, where $n_i$ is the number of channels in set $C_i$. A channel is available to user i when it is not occupied by a PU and it is in $C_i$. User i has a set of available channels as $V_i = \{v_{i1},v_{i2},\cdots,v_{im_i}\}$, where $m_i$ is the number of channels in set $V_i$. For simplicity, we suppose that $V_i$ doesn't change during the rendezvous process. Let the length of every timeslot be 2t, where $t=10ms$ according to IEEE 802.22.
+ Suppose the licensed spectrum is divided into $n$ channels which are non-overlapping. Denote the set of channels as $U=\{1,2,\cdots,n\}$, where $n$ is the total number of channels in $U$. We assume that every user in the network is equipped with a CRN. User i has a set of available channels as $V_i = \{v_{i1},v_{i2},\cdots,v_{im_i}\}$, where $m_i$ is the number of channels in set $V_i$. For simplicity, we suppose that $V_i$ doesn't change during the rendezvous process. Let the length of every timeslot be 2t, where $t=10ms$ according to IEEE 802.22.
 
 \begin{figure}
 \centering
@@ -282,18 +305,18 @@ Hence, no matter when the users start their rendezvous process, the maximum over
 \subsection{Problem Formulations}
 In this paper, we focus on designing rendezvous algorithms for two-user scenario, because it is the fundamental process for multiple-user rendezvous. Two-user rendezvous algorithms can be expanded into multiple-user rendezvous algorithms. Then we give the formulations of the three problems we will solve:
 \begin{problem}
-Utilize an arbitrary available channel of a user to design an asynchronous anonymous non-oblivious global-sequence-based rendezvous algorithm which has low MTTR and high RD.
+Utilize an arbitrary available channel of a user to design an asynchronous anonymous non-oblivious global-sequence-based rendezvous algorithm with low MTTR.
 \end{problem}
 
 \begin{problem}
-Utilize the ID of a user to design an asynchronous non-anonymous oblivious local-sequence-based rendezvous algorithm which has low MTTR and highest RD.
+Utilize the ID of a user to design an asynchronous non-anonymous oblivious local-sequence-based rendezvous algorithm with low MTTR.
 \end{problem}
 
 \begin{problem}
-Utilize an arbitrary available channel of a user to design an asynchronous anonymous non-oblivious local-sequence-based rendezvous algorithm which has low MTTR and high RD.
+Utilize an arbitrary available channel of a user to design an asynchronous anonymous non-oblivious local-sequence-based rendezvous algorithm with low  MTTR.
 \end{problem}
 
-\section{A Global-sequence-based Rendezvous Algorithm Based on the Channel Label}
+\section{Sequence-Rotating Rendezvous Algorithm}
 
 In this section, we will propose a global-sequence-based rendezvous algorithm which is based on the channel label.
 
@@ -323,7 +346,7 @@ The main idea of Alg.\ref{alg2} is to generate a subsequence $S$ with length $L$
 
 
 \begin{algorithm}
-\caption{Global-Sequence-Based Non-Oblivious Rendezvous Algorithm}
+\caption{Sequence-Rotating Rendezvous Algorithm}
 \label{alg1}
 \begin{algorithmic}[1]
 \STATE Input: the set of available channels $V=\{v_1, v_2, \cdots, v_m\}$ and the total number $N$ of all channels;
@@ -426,24 +449,8 @@ We show discuss this problem in two cases.
 Combine these together, we have shown that Theorem \ref{theo-alg1} holds.
 \end{IEEEproof}
 
-
-\begin{theorem}
-The RD of Alg.\ref{alg1} is $100\%$ if user $i$ and $j$ choose different channels.
-\end{theorem}
-
-\begin{IEEEproof}
-If user $i$ and $j$ choose different channels, according to the case 2 of the proof of Theorem \ref{theo-alg1}, every available channel of $V_i$ will meet every available channel of $V_j$ in $2P^2+2P$ timelsots.
-\end{IEEEproof}
-
-
-
-
-\section{A Local-Sequence-Based Rendezvous Algorithm Utilizing the ID}
-In this section, we will propose an ID-based asynchronous non-anonymous oblivious rendezvous algorithm.
-
-
-
-The main idea of this algorithm is to create a channel hopping sequence composed of $l + 1$ subsequences, where $l$ is the length of ID.
+\section{ID-based Rendezvous Algorithm}
+In this section, we will propose an ID-based asynchronous non-anonymous oblivious rendezvous algorithm. The main idea of this algorithm is to create a channel hopping sequence composed of $(l + 1)$ subsequences, where $l$ is the length of ID.
 
 \begin{algorithm}
 \caption{Local-sequence-based Non-Anonymous Rendezvous Algorithm}
@@ -518,135 +525,138 @@ We discuss in two cases:
 
  Suppose $P_i = P_j$. Let $P = P_i =P_j$ We divide this case into two subcases:
 
-\bfseries Subcase 1.1 \mdseries: Suppose user i and j's periods are aligned, as illustrated in Fig.\ref{cs1}. Because user i and user j are two different users, their ID must be different in at least one digit. Without lose of generality, suppose the k-th digit in $ID_i$ is 0 while the k-th digit in $ID_j$ is 1. Then the k-th element in user i's period corresponds to subsequence $S_{2i}$, whose length is $P+1$. The k-th element in user j's period corresponds to subsequence $S_{3j}$, whose length is $P+2$. Then in every period, one element of $S_{2i}$ will meet one element of $S_{2j}$. According to Lemma 2.3, P+1 and P+2 are co-prime. Then rendezvous can be achieved in $(l+ 1)(P+1)(P+2)$ timeslots according to Theorem 2, as long as user i and j have at least one common channel.
+\bfseries Subcase 1.1 \mdseries: Suppose user i and j's periods are aligned, as illustrated in Fig.\ref{cs1}. Because user i and user j are two different users, their ID must be different in at least one digit. Without lose of generality, suppose the k-th digit in $ID_i$ is 0 while the k-th digit in $ID_j$ is 1. Then the k-th element in user i's period corresponds to subsequence $S_{2i}$, whose length is $P+1$. The k-th element in user j's period corresponds to subsequence $S_{3j}$, whose length is $P+2$. Then in every period, one element of $S_{2i}$ will meet one element of $S_{2j}$. According to Lemma \ref{lm2.3}, P+1 and P+2 are co-prime. Then rendezvous can be achieved in $(l+ 1)(P+1)(P+2)$ timeslots according to Theorem \ref{theo}, as long as user i and j have at least one common channel.
 
-\bfseries Subcase 1.2 \mdseries: Suppose user i and j's periods are not aligned, as illustrated in Fig.\ref{cs2}. In this case, the last element in user i's period will meet one of the first $(l + 1)$ elements of user j's period. The last element in user i's period corresponds to subsequence $S_{1i}$. The corresponding element of user j corresponds to subsequence $S_{2j}$ or $S_{3j}$. From Lemma 2.3 and 2.4, we know that P and P+1 are co-prome, P and P +2 are also co-prime. Hence, according to Theorem 2, rendezvous can be achieved in $(l + 1)P(P+1)$ or $(l + 1)P(P+2)$ timeslots respectively.
+\bfseries Subcase 1.2 \mdseries: Suppose user i and j's periods are not aligned, as illustrated in Fig.\ref{cs2}. In this case, the last element in user i's period will meet one of the first $(l + 1)$ elements of user j's period. The last element in user i's period corresponds to subsequence $S_{1i}$. The corresponding element of user j corresponds to subsequence $S_{2j}$ or $S_{3j}$. From Lemma \ref{lm2.3} and \ref{lm2.4}, we know that P and P+1 are co-prome, P and P +2 are also co-prime. Hence, according to Theorem \ref{theo}, rendezvous can be achieved in $(l + 1)P(P+1)$ or $(l + 1)P(P+2)$ timeslots respectively.
 
 \bfseries Case 2 \mdseries: Suppose $P_i \ne P_j$.  We divide this case into two subcases:
 
 \bfseries Subcase 2.1 \mdseries: Suppose user i and j's periods are aligned, as illustrated in Fig.\ref{cs1}. In this case, the last
-element in user i's period will meet the last element in user j's period. The last element in user i's period corresponds to subsequence $S_{i1}$. The last element in user j's period corresponds to subsequence $S_{j1}$. Because $P_i \ne P_j$, rendezvous can be achieved in $(l + 1)P_iP_j$ timeslots according to Theorem 2, as long as user i and j have at least one common channel.
+element in user i's period will meet the last element in user j's period. The last element in user i's period corresponds to subsequence $S_{i1}$. The last element in user j's period corresponds to subsequence $S_{j1}$. Because $P_i \ne P_j$, rendezvous can be achieved in $(l + 1)P_iP_j$ timeslots according to Theorem \ref{theo}, as long as user i and j have at least one common channel.
 
-\bfseries Subcase 2.2 \mdseries: Suppose user i and j's periods are not aligned, as illustrated in Fig.\ref{cs2}. Without lose of generality, suppose $P_i > P_j$. In this case, the last element in user i's period will meet one of the first $(l + 1)$ elements of user j's period. The last element in user j's period will meet one of the first $(l + 1)$ elements of user i's period. The last element in user j's period corresponds to subsequence $S_{1j}$, whose length is $P_j$. The corresponding element of user j corresponds to subsequence $S_{2i}$ or $S_{3i}$, whose lengths are $P_i +1$ and $P_i +2$ respectively. Because $P_i$ and $P_j$ are two different primes, $P_i > P_j +2$ or $P_i = P_j +2$. If $P_i > P_j + 2$, from Lemma 2.5, we know $P_i$ and $P_j + 1$ are co-prime, $P_i$ and $P_j +2 $ are co-prime. According to Theorem 2, rendezvous can be achieved in $(l + 1)P_i(P_j+1)$ or $(l + 1)P_i(P_j+2)$ timeslots respectively. If $P_i = P_j + 2$, then $P_i + 1 = P_2 + 3$, $P_i + 2 = P_j + 4$. If $P_j = 2$, $P_i = 2 + 2=4$ is not a prime. In Alg.\ref{alg3}, we set P to be 5 if $P=3$. Because $P_2 \ne 2$ and $P_2 \ne 3$, $P_2 + 3$ and $P_2 + 4$ can not be divided by $P_2$ without remainder. From Lemma 2.5, we know that both $P_i + 1$ and $P_i +2$ are co-prime with $P_j$. According to Theorem 2, rendezvous can be achieved in $(l + 1)(P_i + 1)P_j$ or $(l + 1)(P_i+2)P_j$ timeslots respectively.
+\bfseries Subcase 2.2 \mdseries: Suppose user i and j's periods are not aligned, as illustrated in Fig.\ref{cs2}. Without lose of generality, suppose $P_i > P_j$. In this case, the last element in user i's period will meet one of the first $(l + 1)$ elements of user j's period. The last element in user j's period will meet one of the first $(l + 1)$ elements of user i's period. The last element in user j's period corresponds to subsequence $S_{1j}$, whose length is $P_j$. The corresponding element of user j corresponds to subsequence $S_{2i}$ or $S_{3i}$, whose lengths are $P_i +1$ and $P_i +2$ respectively. Because $P_i$ and $P_j$ are two different primes, $P_i > P_j +2$ or $P_i = P_j +2$. If $P_i > P_j + 2$, from Lemma \ref{lm2.5}, we know $P_i$ and $P_j + 1$ are co-prime, $P_i$ and $P_j +2 $ are co-prime. According to Theorem 2, rendezvous can be achieved in $(l + 1)P_i(P_j+1)$ or $(l + 1)P_i(P_j+2)$ timeslots respectively. If $P_i = P_j + 2$, then $P_i + 1 = P_2 + 3$, $P_i + 2 = P_j + 4$. If $P_j = 2$, $P_i = 2 + 2=4$ is not a prime. In Alg.\ref{alg3}, we set P to be 5 if $P=3$. Because $P_2 \ne 2$ and $P_2 \ne 3$, $P_2 + 3$ and $P_2 + 4$ can not be divided by $P_2$ without remainder. From Lemma \ref{lm2.5}, we know that both $P_i + 1$ and $P_i +2$ are co-prime with $P_j$. According to Theorem \ref{theo}, rendezvous can be achieved in $(l + 1)(P_i + 1)P_j$ or $(l + 1)(P_i+2)P_j$ timeslots respectively.
 
 Combine the above together, Theorem \ref{theo-alg3} holds.
 
 \end{IEEEproof}
 
-\begin{theorem}
-\label{theo-rd-alg3}
-The RD of Alg.\ref{alg3} is 100\%.
-\end{theorem}
 
-\begin{IEEEproof}
-For any user, the corresponding subsequence $S_1,S_2,S_3$ all contains all the channels in its available channel set. From the proof of Theorem 3, we know that one subsequence of user $i$ will meet one subsequence of user $j$ and the lengths of the subsequences are co-prime. Denote the two subsequences as $S_i$ and $S_j$. From Theorem \ref{theo}, we know that every element in $S_i$ will meet all of the elements in $S_j$ and vice versa. Hence, the RD of Alg.\ref{alg3} is 100\%.
-\end{IEEEproof}
-
-\section{A Local-Sequence-Based Rendezvous Algorithm Utilizing the Channel Label}
-In this section, we will propose a rendezvous algorithm which utilizes the label of a channel in the available channel set.
+\section{Channel-Label-based Rendezvous Algorithm}
+In this section, we will propose a Channel-Label-based Rendezvous (CLR) algorithm which utilizes the label of an arbitrary channel in the available channel set.
 \begin{algorithm}
-\caption{Channel-Label-Based Local-sequence-based Non-Oblivious Rendezvous Algorithm}
+\caption{Channel-Label-based Rendezvous Algorithm}
 \label{alg4}
 \begin{algorithmic}[1]
 \STATE Input: the set of available channels $V=\{v_1,v_2,\cdots,v_m\}$ and the number of all channels: $N$;
+\STATE Find the smallest prime $P_N$ that ensure $ P_N \ge N$ and $P_N \ge 5$;
+\STATE Find the smallest prime $P$ that ensure $P \ge m$ and $P \ge 5$;
 
-\STATE Find the smallest prime $P$ that ensure $P \ge m$;
-\IF{$P = 3$}
-\STATE $P := 5$;
-\ENDIF
-\STATE Randomly choose a channel $c$ from $V$;
-\STATE Convert $c$ into a binary string $CH$ whose length is $\left \lceil log_2 N \right \rceil$;
+\STATE Initialize $l:=\left \lceil log_2 N \right \rceil$;
+\STATE Initialize $t := 0$;
+\STATE Randomly choose a channel $(c)$ from $V$;
+\STATE Convert $c$ into a binary string $CH$ whose length is $l$;
 
-\STATE Invoke Alg.\ref{alg2} to generate three subsequences $S_1, S_2, S_3$ with channel set $V$ and length $P, P+1, P+2$ respectively.
-
-\STATE Initialize $t := 0$, $i := 0$, $j:=0$;
-\WHILE{Not rendezvous}
-\IF{$ t < P_N(\left \lceil log_2 N \right \rceil +1)$}
+\WHILE{Not rendezvous and $t < (l+1)P_N$}
 \STATE Access channel $(c)$;
-\ELSE
- \STATE $i := \left \lfloor t / ((\left \lceil log_2 N \right \rceil +1)) \right \rfloor$;
- \STATE $j :=  t$ mod $ (\left \lceil log_2 N \right \rceil + 1)$;
-  \IF{$ j < \left \lceil log_2 N \right \rceil$}
-    \IF{$CH[j] = 0$}
-     \STATE Access channel $S_2[i $ mod $ (P+1)]$;
-      \ELSE
-     \STATE Access channel $S_3[i $ mod $ (P+2)]$;
-     \ENDIF
-  \ELSE
-\STATE Access channel $S_1[i $ mod $ P]$;
-\ENDIF
-\ENDIF
-\STATE $t:=t+1$;
 \ENDWHILE
+\STATE Invoke Alg.\ref{alg3} to achieve rendezvous with channel set $V$, binary string $CH$ and length $l$;
 \end{algorithmic}
 \end{algorithm}
 
-The main idea of Alg.\ref{alg4} is to randomly choose an available channel $c$ from $V$ and use the binary representation of $c$ as the user's ID. It is obvious that the available channel chosen by two users can be identical, but our algorithm can solve this problem, because the label of an available channel is very useful.
+The main idea of Alg.\ref{alg4} is to randomly choose an available channel $c$ from $V$ and use the binary representation of $c$ as the user's ID. It is obvious that the available channel chosen by two users can be identical, but our algorithm can solve this problem, because the label of an available channel is very useful. Alg.\ref{alg4} is composed of two phases, the first phase is the first $(l+2)P_N$ timeslots, the following is the second phase.
+In the \bfseries first phase \mdseries, the user stays on the chosen channel $(c)$. In the \bfseries second phase \mdseries, the user invoke Alg.\ref{alg3} to achieve rendezvous with the binary representation of $c$ as ID.
 
 
-
-In Alg.\ref{alg4}, we divide timeslots into two subsequences, $S$ and $C$. Subsequence $S$ is further divided into three subsequences $S_1,S_2$ and $S_3$. Subsequence $C$ is filled with channel ($c$). There are three situations of the overlapping of the timeslots of user $i$ and $j$, as shown in Fig.\ref{sit-alg4}
-
-\begin{figure}
-\centering
-\subfigure[Situation 1]{
-\includegraphics[width=0.8in]{situation1}
-\label{stu1}
-}
-\subfigure[Situation 2]{
-\includegraphics[width=0.8in]{situation2}
-\label{stu2}
-}
-\subfigure[Situation 3]{
-\includegraphics[width=0.8in]{situation3}
-\label{stu3}
-}
-\caption{Three situations of timeslot overlapping of user $i$ and $j$.}
-\label{sit-alg4}
-\end{figure}
 
 \begin{theorem}
 \label{theo-alg4}
-Alg. \ref{alg4} can guarantee rendezvous for two asynchronous users in $3(P_i+2)(P_j+2)(\left \lceil log_2N \right \rceil +1)$ timeslots as long as $V_i \cap V_j \ne \emptyset$.
+Alg. \ref{alg4} can guarantee rendezvous for two asynchronous users $i$ and $j$ in $((P_i +2)(P_j+2)+P_N)(\left \lceil log_2 N \right \rceil + 1)$ timeslots as long as $V_i \cap V_j \ne \emptyset$.
 \end{theorem}
 
 \begin{IEEEproof}
+
 We discuss this problem in two cases.
 
-\bfseries Case 1: \mdseries Suppose the overlapping of timeslots of user $i$ and user $j$ is as shown in Fig.\ref{stu1}. Then we discuss in two subcases.
+\bfseries Case 1: \mdseries Suppose the channels $c_i$ and $c_j$ chosen by user $i$ and $j$ respectively are different, then the corresponding binary representations of $c_i$ and $c_j$ are different in at least one digit. Therefore, they can replace the roles of IDs for user $i$ and $j$ respectively. Hence, by invoking Alg.\ref{alg3}, rendezvous can be achieved in $((P_i +2)(P_j+2)+P_N)(\left \lceil log_2 N \right \rceil + 1)$ timeslots.
 
-\bfseries Subcase 1.1: \mdseries If two users choose the same channel, because $C_i$ meets $C_j$ every period and $c_i =c_j$, rendezvous will be achieved in one period, which is $3$ timeslots.
+\bfseries Case 2: \mdseries Suppose the channels $c_i$ and $c_j$ chosen by user $i$ and $j$ respectively are the same, let $c = c_i = c_j$. Then channel $(c)$ must be a common channel of user $i$ and $j$. Without lose of generality, suppose user $i$ starts rendezvous process earlier than user $j$. We then divide this case into two subcases.
 
-\bfseries Subcase 1.2: \mdseries If two users choose different channels, then $CH_i$ will be different from $CH_j$ in at least one bit. Then this situation is the same as that in Alg.\ref{alg3}, except for the time cost is three times. According to the proof of Theorem \ref{theo-alg3}, rendezvous for user $i$ and user $j$ will be achieved in  $3(P_i+2)(P_j+2)(\left \lceil log_2N \right \rceil +1)$ timeslots.
+\bfseries Subcase 2.1 \mdseries Suppose when user $j$ starts rendezvous process, user $i$ is still in the \bfseries first phase \mdseries.
+Then user $j$ will hop to channel $(c)$ in its first timeslot and user $i$ is also in channel $(c)$, hence rendezvous is achieve is achieved in $1$ timeslot.
 
-\bfseries Case 2: \mdseries Suppose the overlapping of timeslots of user $i$ and user $j$ is as shown in Fig.\ref{stu2} or Fig.\ref{stu3}.
-We also discuss in two subcases.
-
-\bfseries Subcase 2.1: \mdseries If two users choose the same channel, denote it as channel ($c$). Then channel ($c$) is in both $S_{ki} (k = 1,2,3)$ and $S_{kj} (k = 1,2,3)$. Because $S_i$ overlaps with $C_j$ and $S_j$ overlaps with $C_i$ in every period, then $C_j$ will meet all the elements of $S_{1i}$ in $(\left \lceil log_2N \right \rceil +1)P_j$ periods, which are $3(\left \lceil log_2N \right \rceil +1)P_j$ timeslots. Hence, rendezvous will be achieved in $3(\left \lceil log_2N \right \rceil +1)P_j$ timeslots.
-
-\bfseries Subcase 2.2: \mdseries If two users choose different channels, then $CH_i$ will be different from $CH_j$ in at least one bit. Because in both Fig.\ref{stu2} and Fig.\ref{stu3}, $S_i$ overlaps with $S_j$, this situation is the same as that in Alg.\ref{alg3}, except for the time cost is three times. According to the proof of Theorem \ref{theo-alg3}, rendezvous for user $i$ and user $j$ will be achieved in  $3(P_i+2)(P_j+2)(\left \lceil log_2N \right \rceil +1)$ timeslots.
+\bfseries Subcase 2.2 \mdseries Suppose when user $j$ starts rendezvous process, user $i$ is already in the \bfseries second phase \mdseries. Because  user $j$ stays on channel $(c)$ for $P_N(\left \lceil log_2 N \right \rceil + 1)$ timeslots, and $P_N \ge P_i$, hence channel $(c)$ will meets every elements of user $i$'s subsequence $S_1$ (defined in Alg.\ref{alg3}). Therefore, rendezvous will be achieved in the \bfseries first phase \mdseries of user $j$.
 
 Combine these together, Theorem \ref{theo-alg4} holds.
+
 \end{IEEEproof}
 
-\begin{theorem}
-The RD of Alg.\ref{alg4} is $100\%$ if user $i$ and $j$ choose different channels.
-\end{theorem}
 
-\begin{IEEEproof}
-If user $i$ and $j$ choose different channels, then $CH_i$ and $CH_j$ are two different strings. Because $S_i$ overlaps with $S_j$ in all cases, the situation is the same as that in Alg.\ref{alg3}. From the proof of Theorem \ref{theo-rd-alg3}, we know that the RD of Alg.\ref{alg4} is $100\%$.
-\end{IEEEproof}
 
 \section{Simulation}
 
+In this section, we will show the simulation results of comparing  our algorithms  with state-of-the-art algorithms. We implemented the algorithms in C++ language. And for each experiment, we run the corresponding algorithm for $10000$ times.
+
+ We first compare our SRR algorithm with a representative asynchronous non-anonymous non-oblivious global-sequence-based rendezvous algorithm -- DRDS. Denote $R_i$ and $R_j$ as the ratios of $|V_i|$ and $|V_j|$ to $n$ respectively. First, we set $V_i = \{0.3n, 0.3n +1,\cdots, 0.5n\}, V_j =\{0.5n, 0.5n + 1,\cdots, 0.7n -1 \}$ where $n$ is the total number of channels in the network. In this case, $R_i = R_j = 0.3$. We set the number of common channels to be $1$ in order to reduce the impact of the randomly channel hopping in the both algorithms. We increase $n$ from $10$ to $100$ by $10$ steps each time. The result is illustrated in Fig.\ref{result1}, from which we can clearly see that the MTTR of SRR grows slower than that of DRDS.  Then we set $V_i = \{1,2,\cdots, 0.5n\}$ and $V_j = \{0.5n, 0.5n + 1, \cdots, n -1 \}$. In this case, $R_i = R_j = 0.5$. The result is illustrated in Fig. \ref{result2}. We can clearly see that the MTTR of SRR grows slower than that of DRDS. And we can find the ratio of the MTTR of DRDS to that of SRR in Fig.\ref{result1} is larger than that in Fig.\ref{result2} and more close to the theoretical analysis. The reason is the ratio of the number of common channel to the total channel number decreases with the increase of $R_i$ and $R_j$, which makes it harder for user $i$ and $j$ to choose the same channel simultaneously.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\columnwidth]{fig2}
+\caption{Comparison between the SRR algorithm and the DRDS algorithm when $N$ increases from $10$ to $100$ and $R_i = R_j = 0.2$.}
+\label{result2}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\columnwidth]{fig1}
+\caption{Comparison between the SRR algorithm and the DRDS algorithm when $N$ increases from $10$ to $100$ and $R_i =R_j = 0.5$.}
+\label{result1}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\columnwidth]{fig4}
+\caption{Comparison between the IDR algorithm and the A-HCH-$\eta_1$/$\eta_2$ algorithms when $l$ increases from $10$ to $100$ and $N = 50$.}
+\label{result4}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\columnwidth]{fig3}
+\caption{Comparison between the IDR algorithm and the A-HCH-$\eta_1$/$\eta_2$ algorithms when $l$ increases from $10$ to $100$ and $N=100$.}
+\label{result3}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\columnwidth]{fig6}
+\caption{Comparison between the CLR algorithm and the MTP algorithm when $N$ increases from $10$ to $100$ and $R_i = R_j = 0.2$.}
+\label{result6}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\columnwidth]{fig5}
+\caption{Comparison between the CLR algorithm and the MTP algorithm when $N$ increases from $10$ to $100$ and $R_i =R_j = 0.5$.}
+\label{result5}
+\end{figure}
+Second, we conduct experiments to compare the MTTRs of the IDR algorithm and the state-of-the-art asynchronous non-anonymous oblivious local-sequence-based algorithms -- A-HCH-$\eta_1$ and A-HCH-$\eta_2$. For this kind of rendezvous algorithm, the crux is the relationship between the increase of MTTR with the increase of the length of user' ID. Hence, we conduct experiments which fixes $R_i$, $R_j$ and $N$ but increases the length of ID $l$ step by step. We first fix $R_i = R_j = 0.5$ by setting $V_i = \{1,2,\cdots, 0.5n\}$ and $V_j = \{0.5n, 0.5n + 1, \cdots, n -1 \}$. We fix $N = 50$ and increase $l$ from $10$ to $100$ by $10$ steps each time. The result is illustrated in Fig.\ref{result4}. We can clearly see that the MTTR of IDR is less than that of A-HCH-$\eta_1$ or A-HCH-$\eta_2$ in general.
+Then we repeats this experiment except for increasing $N$ to $ 100$. The result is illustrated in Fig.\ref{result3}. We can clearly see that the MTTR of IDR is less than that of A-HCH-$\eta_1$ or A-HCH-$\eta_2$ in general.
+
+
+Third, we implement experiments to compare our CLR algorithm with the state-of-the-art asynchronous anonymous non-oblivious local-sequence-based algorithm -- MTP. MTP has a theoretical MTTR of $O(|V_i||V_j|loglogn)$. We first set $R_i = R_j = 0.2$ by setting $V_i = \{0.3n, 0.3n +1,\cdots, 0.5n\}, V_j =\{0.5n, 0.5n + 1,\cdots, 0.7n -1 \}$. We increase $n$ from $10$ to $100$ by $10$ steps each time. The result is illustrated in Fig.\ref{result6}. We can clearly see that the MTTR of CLR is less than that of MTP in general, and the MTTR of MTP on some experiment points is very large. This is because the MTP algorithm is designed to be relatively complicated in order to achieve MTTR in $O(|V_i||V_j|loglogn)$ order, however, it results in a large constant coefficient. Hence, the MTTR of MTP algorithm can be very high, result in losing superiority. We implement another experiment by increasing $R_i$ and $R_j$ to $0.5$, the result is illustrated in Fig.\ref{result5}. We can see that the situation is similar to that in Fig.\ref{result6}.
+
+
+
 \section{Conclusion}
-
-\section{Acknowledgements}
-
+In this paper, we first propose an Sequence-Rotating Rendezvous (SRR) algorithm, which utilizes the label of an arbitrary available channel of a user as local information to generate channel hopping sequence. SRR algorithm uses the thought of number theory and has an MTTR of $(2P^2 + 2P)$ timeslots. Second, we utilize the user's identifier (ID) to design an ID-based Rendezvous (IDR) algorithm. IDR algorithm also uses the thought of number theory and has an MTTR of $(l+1)(P_i+2)(P_j+2)$ timeslots, where $l$ is the length of ID and $P_i$ and $P_j$ are the smallest primes which are not less than the size of available channel sets of user $i$ and $j$ respectively. Third, we propose a Channel-Label-based Rendezvous (CLR) algorithm which can guarantee rendezvous for any two users in $((P_i +2)(P_j+2) + P_N)(\left \lceil log_2 N \right \rceil + 1)$ timeslots, where $N$ is the overall amount of channels in the network and $P_N$ is the least prime which is not less than $N$. CLR algorithm utilizes the binary representation of an arbitrary available channel of a user as the user's ID. CLR algorithm has an MTTR of $((P_i + 2)(P_j + 2) +P_N)(\left \lceil log_2 N \right \rceil + 1)$ timeslots. We conducted plenty of experiments comparing our algorithms with state-of-the-art rendezvous algorithms and the results show our algorithms can achieve good performance.
 
 
-%\bibliographystyle{plain}
-%\bibliography{references}
+
+%
+\bibliographystyle{plain}
+\bibliography{references}
+
 \end{document}
 
 

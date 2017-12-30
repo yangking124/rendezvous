@@ -1,3 +1,170 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{10}
+
+\bibitem{Bian2009A}
+Kaigui Bian, Jung~Min Park, and Ruiliang Chen.
+\newblock A quorum-based framework for establishing control channels in dynamic
+  spectrum access networks.
+\newblock In {\em International Conference on Mobile Computing and Networking,
+  MOBICOM 2009, Beijing, China, September}, pages 25--36, 2009.
+
+\bibitem{Bian2011Control}
+Kaigui Bian, Jung~Min Park, and Ruiliang Chen.
+\newblock Control channel establishment in cognitive radio networks using
+  channel hopping.
+\newblock {\em IEEE Journal on Selected Areas in Communications},
+  29(4):689--703, 2011.
+
+\bibitem{Chawla2017Comprehensive}
+Meenu Chawla, Aishwarya Sagar~Anand Ukey, and P.~Reshma.
+\newblock Comprehensive asynchronous symmetric rendezvous algorithm in
+  cognitive radio networks.
+\newblock {\em Sadhana}, pages 1--10, 2017.
+
+\bibitem{Chen2014A}
+Lin Chen, Kaigui Bian, Lin Chen, Cong Liu, Jung Min~Jerry Park, and Xiaoming
+  Li.
+\newblock A group-theoretic framework for rendezvous in heterogeneous cognitive
+  radio networks.
+\newblock In {\em ACM International Symposium on Mobile Ad Hoc NETWORKING and
+  Computing}, pages 165--174, 2014.
+
+\bibitem{Gu2014Fully}
+Zhaoquan Gu, Qiang~Sheng Hua, and Weiguo Dai.
+\newblock Fully distributed algorithms for blind rendezvous in cognitive radio
+  networks.
+\newblock In {\em ACM International Symposium on Mobile Ad Hoc NETWORKING and
+  Computing}, pages 155--164, 2014.
+
+\bibitem{Gu2013Nearly}
+Zhaoquan Gu, Qiang~Sheng Hua, Yuexuan Wang, and Francis C.~M. Lau.
+\newblock Nearly optimal asynchronous blind rendezvous algorithm for cognitive
+  radio networks.
+\newblock In {\em Sensor, Mesh and Ad Hoc Communications and Networks}, pages
+  371--379, 2013.
+
+\bibitem{Gu2015Improved}
+Zhaoquan Gu, Haosen Pu, Qiang~Sheng Hua, and Francis C~M. Lau.
+\newblock Improved rendezvous algorithms for heterogeneous cognitive radio
+  networks.
+\newblock In {\em Computer Communications}, pages 154--162, 2015.
+
+\bibitem{Jia2010Analysis}
+J.~G. Jia, Z.~W. He, J.~M. Kuang, and H.~F. Wang.
+\newblock Analysis of key technologies for cognitive radio based wireless
+  sensor networks.
+\newblock In {\em International Conference on Wireless Communications
+  NETWORKING and Mobile Computing}, pages 1--5, 2010.
+
+\bibitem{Jia2008HC}
+Juncheng Jia, Qian Zhang, and Xuemin Shen.
+\newblock Hc-mac: A hardware-constrained cognitive mac for efficient spectrum
+  management.
+\newblock {\em Selected Areas in Communications IEEE Journal on},
+  26(1):106--117, 2008.
+
+\bibitem{Kondareddy2009Cognitive}
+Yogesh~R. Kondareddy, Prathima Agrawal, and Krishna Sivalingam.
+\newblock Cognitive radio network setup without a common control channel.
+\newblock In {\em Military Communications Conference, 2008. Milcom}, pages
+  1--6, 2009.
+
+\bibitem{Li2014Deterministic}
+Guyue Li, Zhaoquan Gu, Xiao Lin, Haosen Pu, and Qiang~Sheng Hua.
+\newblock Deterministic distributed rendezvous algorithms for multi-radio
+  cognitive radio networks.
+\newblock In {\em ACM International Conference on Modeling, Analysis and
+  Simulation of Wireless and Mobile Systems}, pages 313--320, 2014.
+
+\bibitem{Li2013Economic}
+Ming Li, Pan Li, Miao Pan, and Jinyuan Sun.
+\newblock Economic-robust transmission opportunity auction in multi-hop
+  wireless networks.
+\newblock In {\em INFOCOM, 2013 Proceedings IEEE}, pages 1842--1850, 2013.
+
+\bibitem{Lin2013Enhanced}
+Zhiyong Lin, Hai Liu, Xiaowen Chu, and Yiu~Wing Leung.
+\newblock Enhanced jump-stay rendezvous algorithm for cognitive radio networks.
+\newblock {\em IEEE Communications Letters}, 17(9):1742--1745, 2013.
+
+\bibitem{Liu2012Jump}
+Hai Liu, Zhiyong Lin, Xiaowen Chu, and Yiu-Wing Leung.
+\newblock Jump-stay rendezvous algorithm for cognitive radio networks.
+\newblock {\em IEEE Transactions on Parallel and Distributed Systems},
+  23(10):1867--1881, 2012.
+
+\bibitem{Ma2005Dynamic}
+Liangping Ma, Xiaofeng Han, and Chien~Chung Shen.
+\newblock Dynamic open spectrum sharing mac protocol for wireless ad hoc
+  networks.
+\newblock In {\em IEEE International Symposium on New Frontiers in Dynamic
+  Spectrum Access Networks}, pages 203--213, 2005.
+
+\bibitem{Min2014A}
+Jia Min, Xinyu Wang, Qing Guo, and Xuemai Gu.
+\newblock A novel multi-bit decision adaptive cooperative spectrum sensing
+  algorithm based on trust valuations in cognitive ofdm system.
+\newblock In {\em Vehicular Technology Conference}, pages 1--5, 2014.
+
+\bibitem{Mohapatra2016ASCH}
+Sulagna Mohapatra and Prasan~Kumar Sahoo.
+\newblock Asch: A novel asymmetric synchronous channel hopping algorithm for
+  cognitive radio networks.
+\newblock In {\em IEEE International Conference on Communications}, pages 1--6,
+  2016.
+
+\bibitem{Perez2007A}
+J~Perez-Romero, O~Sallent, R~Agusti, and L~Giupponi.
+\newblock A novel on-demand cognitive pilot channel enabling dynamic spectrum
+  allocation.
+\newblock In {\em IEEE International Symposium on New Frontiers in Dynamic
+  Spectrum Access Networks}, pages 46--54, 2007.
+
+\bibitem{Shin2010A}
+Jongmin Shin, Dongmin Yang, and Cheeha Kim.
+\newblock A channel rendezvous scheme for cognitive radio networks.
+\newblock {\em IEEE Communications Letters}, 14(10):954--956, 2010.
+
+\bibitem{Wu2013On}
+Ching~Chan Wu and Shan~Hung Wu.
+\newblock On bridging the gap between homogeneous and heterogeneous rendezvous
+  schemes for cognitive radios.
+\newblock In {\em Fourteenth ACM International Symposium on Mobile Ad Hoc
+  NETWORKING and Computing}, pages 207--216, 2013.
+
+\bibitem{Wu2014Rendezvous}
+Shan~Hung Wu, Ching~Chan Wu, Wing~Kai Hon, and Kang~G Shin.
+\newblock Rendezvous for heterogeneous spectrum-agile devices.
+\newblock {\em Proceedings - IEEE INFOCOM}, pages 2247--2255, 2014.
+
+\bibitem{Wu2014CACH}
+Tsung~Ying Wu, Wanjiun Liao, and Cheng~Shang Chang.
+\newblock Cach: Cycle-adjustable channel hopping for control channel
+  establishment in cognitive radio networks.
+\newblock In {\em INFOCOM, 2014 Proceedings IEEE}, pages 2706--2714, 2014.
+
+\bibitem{Yang2016Fully}
+Bo~Yang, Wei Liang, Meng Zheng, and Ying~Chang Liang.
+\newblock Fully distributed channel-hopping algorithms for rendezvous setup in
+  cognitive multiradio networks.
+\newblock {\em IEEE Transactions on Vehicular Technology}, 65(10):8629--8643,
+  2016.
+
+\bibitem{Yang2016A}
+Bo~Yang, Meng Zheng, and Wei Liang.
+\newblock A time-efficient rendezvous algorithm with a full rendezvous degree
+  for heterogeneous cognitive radio networks.
+\newblock In {\em IEEE INFOCOM 2016 - the IEEE International Conference on
+  Computer Communications}, pages 1--9, 2016.
+
+\bibitem{Yu2015Adjustable}
+Lu~Yu, Hai Liu, Yiu~Wing Leung, and Xiaowen Chu.
+\newblock Adjustable rendezvous in multi-radio cognitive radio networks.
+\newblock In {\em IEEE Global Communications Conference}, pages 1--7, 2015.
+
+\bibitem{Zhang2014Channel}
+Yifan Zhang, Gexin Yu, Qun Li, Haodong Wang, Xiaojun Zhu, and Baosheng Wang.
+\newblock Channel-hopping-based communication rendezvous in cognitive radio
+  networks.
+\newblock {\em IEEE/ACM Transactions on Networking}, 22(3):889--902, 2014.
 
 \end{thebibliography}
